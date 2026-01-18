@@ -681,10 +681,21 @@
             const completionRate = totalSubtasks > 0 ? ((completedSubtasks / totalSubtasks) * 100).toFixed(1) : 0;
             const avgTasksPerDay = tasks.length > 0 ? (totalSubtasks / tasks.length).toFixed(1) : 0;
             const productivityScore = tasks.length > 0 ? (completedSubtasks / tasks.length).toFixed(1) : 0;
-
+            useEffect(() => { localStorage.setItem('daily-tracker-tasks', JSON.stringify(tasks)); }, [tasks]);
+            useEffect(() => { localStorage.setItem('daily-tracker-timetable', JSON.stringify(timetable)); }, [timetable]);
+            useEffect(() => { localStorage.setItem('daily-tracker-theme', isDark ? 'dark' : 'light'); }, [isDark]);
             useEffect(() => {
-                document.body.className = isDark ? 'dark-theme' : 'light-theme';
-            }, [isDark]);
+    document.body.className = isDark ? 'dark-theme' : 'light-theme';
+    
+    // Load saved data on first load
+    const savedTasks = localStorage.getItem('daily-tracker-tasks');
+    const savedTimetable = localStorage.getItem('daily-tracker-timetable');
+    const savedTheme = localStorage.getItem('daily-tracker-theme');
+    
+    if (savedTasks) setTasks(JSON.parse(savedTasks));
+    if (savedTimetable) setTimetable(JSON.parse(savedTimetable));
+    if (savedTheme) setIsDark(savedTheme === 'dark');
+}, []);
 
             useEffect(() => {
                 if (viewMode === 'dashboard') {
