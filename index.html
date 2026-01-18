@@ -6,31 +6,609 @@
     <title>Daily Activity Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
-    </style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+    }
+    
+    .light-theme {
+    /* Backgrounds - Professional gradient-ready */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --bg-tertiary: #f1f5f9;
+    --bg-card: #ffffff;
+    --bg-hover: #e2e8f0;
+    
+    /* Text Colors - Enhanced hierarchy */
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+    --text-disabled: #94a3b8;
+    
+    /* Border & Dividers */
+    --border-color: #e2e8f0;
+    --border-light: #f1f5f9;
+    --divider: #cbd5e1;
+    
+    /* Primary Brand Colors - Vibrant & Professional */
+    --accent-primary: #6366f1;
+    --accent-primary-hover: #4f46e5;
+    --accent-primary-light: #eef2ff;
+    --accent-secondary: #8b5cf6;
+    --accent-secondary-hover: #7c3aed;
+    
+    /* Status Colors - Analytics-friendly */
+    --success: #10b981;
+    --success-light: #d1fae5;
+    --success-dark: #059669;
+    --warning: #f59e0b;
+    --warning-light: #fef3c7;
+    --warning-dark: #d97706;
+    --danger: #ef4444;
+    --danger-light: #fee2e2;
+    --danger-dark: #dc2626;
+    --info: #3b82f6;
+    --info-light: #dbeafe;
+    --info-dark: #2563eb;
+    
+    /* Chart & Data Visualization */
+    --chart-1: #6366f1;
+    --chart-2: #8b5cf6;
+    --chart-3: #ec4899;
+    --chart-4: #f59e0b;
+    --chart-5: #10b981;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    --gradient-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    
+    /* Shadows - Depth & elevation */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+    .dark-theme {
+    /* Backgrounds - Rich dark tones */
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-tertiary: #334155;
+    --bg-card: #1e293b;
+    --bg-hover: #334155;
+    
+    /* Text Colors - Optimized for dark mode */
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --text-disabled: #64748b;
+    
+    /* Border & Dividers */
+    --border-color: #334155;
+    --border-light: #1e293b;
+    --divider: #475569;
+    
+    /* Primary Brand Colors - Adjusted for dark mode */
+    --accent-primary: #818cf8;
+    --accent-primary-hover: #6366f1;
+    --accent-primary-light: #312e81;
+    --accent-secondary: #a78bfa;
+    --accent-secondary-hover: #8b5cf6;
+    
+    /* Status Colors - Dark mode optimized */
+    --success: #34d399;
+    --success-light: #064e3b;
+    --success-dark: #10b981;
+    --warning: #fbbf24;
+    --warning-light: #78350f;
+    --warning-dark: #f59e0b;
+    --danger: #f87171;
+    --danger-light: #7f1d1d;
+    --danger-dark: #ef4444;
+    --info: #60a5fa;
+    --info-light: #1e3a8a;
+    --info-dark: #3b82f6;
+    
+    /* Chart & Data Visualization */
+    --chart-1: #818cf8;
+    --chart-2: #a78bfa;
+    --chart-3: #f472b6;
+    --chart-4: #fbbf24;
+    --chart-5: #34d399;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
+    --gradient-success: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    --gradient-warning: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    --gradient-danger: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+    
+    /* Shadows - Enhanced for dark mode */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.5);
+}
+    /* Color Utility Classes */
+.theme-bg-primary { background-color: var(--bg-primary); }
+.theme-bg-secondary { background-color: var(--bg-secondary); }
+.theme-bg-tertiary { background-color: var(--bg-tertiary); }
+.theme-bg-card { background-color: var(--bg-card); }
+.theme-bg-hover { background-color: var(--bg-hover); }
+
+.theme-text-primary { color: var(--text-primary); }
+.theme-text-secondary { color: var(--text-secondary); }
+.theme-text-muted { color: var(--text-muted); }
+
+.theme-border { border-color: var(--border-color); }
+.theme-accent { background-color: var(--accent-primary); }
+.theme-accent-text { color: var(--accent-primary); }
+
+/* Gradient Backgrounds */
+.gradient-primary { background: var(--gradient-primary); }
+.gradient-success { background: var(--gradient-success); }
+.gradient-warning { background: var(--gradient-warning); }
+.gradient-danger { background: var(--gradient-danger); }
+
+/* Shadow Utilities */
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-xl { box-shadow: var(--shadow-xl); }
+
+/* Card Styles with depth */
+.card-elevated {
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-elevated:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+/* Enhanced Table Styles */
+.table-cell {
+    border: 1px solid var(--border-color);
+    padding: 14px 16px;
+    transition: all 0.2s;
+    font-size: 16px;
+    font-weight: 400;
+    background-color: var(--bg-card);
+}
+
+.table-cell:hover {
+    background-color: var(--bg-hover);
+}
+
+.table-header {
+    background: var(--bg-secondary);
+    font-weight: 600;
+    font-size: 15px;
+    padding: 16px;
+    border: 1px solid var(--border-color);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+/* Enhanced KPI Card */
+.kpi-card {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg-card);
+    transition: all 0.3s ease;
+}
+
+.kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-primary);
+}
+
+.kpi-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+}
+
+/* Status Badge Styles */
+.badge-success {
+    background-color: var(--success-light);
+    color: var(--success-dark);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.badge-warning {
+    background-color: var(--warning-light);
+    color: var(--warning-dark);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.badge-danger {
+    background-color: var(--danger-light);
+    color: var(--danger-dark);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+/* Button Enhancements */
+.btn-primary {
+    background: var(--gradient-primary);
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.btn-success {
+    background: var(--gradient-success);
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-success:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+/* Enhanced Timetable Styles */
+.timetable-time-cell {
+    background: var(--gradient-primary);
+    border: 1px solid var(--border-color);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+    color: #ffffff;
+    box-shadow: var(--shadow-sm);
+}
+
+.timetable-activity-cell {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-left: none;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 17px;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.timetable-activity-cell:hover {
+    background-color: var(--bg-hover);
+    box-shadow: var(--shadow-sm);
+}
+    .theme-bg-primary { background-color: var(--bg-primary); }
+    .theme-bg-secondary { background-color: var(--bg-secondary); }
+    .theme-bg-tertiary { background-color: var(--bg-tertiary); }
+    .theme-text-primary { color: var(--text-primary); }
+    .theme-text-secondary { color: var(--text-secondary); }
+    .theme-text-muted { color: var(--text-muted); }
+    .theme-border { border-color: var(--border-color); }
+    .theme-accent { background-color: var(--accent-primary); }
+    .theme-accent-text { color: var(--accent-primary); }
+    
+    /* Enhanced Typography */
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+    }
+    
+    h1 { font-size: 32px; }
+    h2 { font-size: 24px; }
+    h3 { font-size: 20px; }
+    
+    .table-cell {
+        border: 1px solid var(--border-color);
+        padding: 14px 16px;
+        transition: all 0.2s;
+        font-size: 16px;
+        font-weight: 400;
+    }
+    
+    .table-cell:hover {
+        background-color: var(--bg-tertiary);
+    }
+    
+    .table-header {
+        background-color: var(--bg-secondary);
+        font-weight: 600;
+        font-size: 15px;
+        padding: 16px;
+        border: 1px solid var(--border-color);
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+    }
+    
+    input[type="text"], input[type="checkbox"] {
+        font-size: 16px;
+        font-family: 'Inter', sans-serif;
+    }
+    
+    .compact-row {
+        display: grid;
+        grid-template-columns: 40px 1fr 100px;
+        gap: 8px;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .compact-row:last-child {
+        border-bottom: none;
+    }
+
+    .kpi-card {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .kpi-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent-primary), #8b5cf6);
+    }
+    
+    /* New Timetable Styles */
+    .timetable-container {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 200px);
+        min-height: 600px;
+    }
+    
+    .timetable-grid {
+        display: grid;
+        grid-template-columns: 140px 1fr;
+        gap: 0;
+        flex: 1;
+        overflow: hidden;
+    }
+    
+    .timetable-time-cell {
+        background-color: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 18px;
+        letter-spacing: -0.01em;
+    }
+    
+    .timetable-activity-cell {
+        background-color: var(--bg-primary);
+        border: 1px solid var(--border-color);
+        border-left: none;
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 17px;
+        transition: all 0.2s;
+        position: relative;
+    }
+    
+    .timetable-activity-cell:hover {
+        background-color: var(--bg-tertiary);
+    }
+    
+    .timetable-activity-input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        font-size: 17px;
+        font-weight: 500;
+        padding: 0;
+    }
+    
+    .timetable-delete-btn {
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+    
+    .timetable-activity-cell:hover .timetable-delete-btn {
+        opacity: 1;
+    }
+    /* Celebration & Motivation Styles */
+.celebration-banner {
+    padding: 20px 24px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    animation: slideDown 0.5s ease-out;
+    box-shadow: var(--shadow-lg);
+    border: 2px solid;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes celebrate {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.celebrate-icon {
+    animation: celebrate 0.6s ease-in-out;
+    display: inline-block;
+}
+
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background-color: var(--accent-primary);
+    animation: confetti-fall 3s linear forwards;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+@keyframes confetti-fall {
+    to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.performance-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 20px;
+    border: 2px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+}
+
+.performance-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+.progress-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 14px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.tip-card {
+    background: var(--bg-secondary);
+    border-left: 4px solid var(--accent-primary);
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin-top: 12px;
+    transition: all 0.3s ease;
+}
+
+.tip-card:hover {
+    background: var(--bg-hover);
+    transform: translateX(4px);
+}
+
+.streak-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: var(--gradient-warning);
+    color: white;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 13px;
+    animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+    0%, 100% { box-shadow: 0 0 10px rgba(245, 158, 11, 0.5); }
+    50% { box-shadow: 0 0 20px rgba(245, 158, 11, 0.8); }
+}
+
+</style>
 </head>
-<body>
+<body class="light-theme">
     <div id="root"></div>
 
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
     <script type="text/babel">
-        const { useState, Fragment } = React;
+        const { useState, useEffect, useRef } = React;
 
-        // Lucide Icons as SVG components
-        const Plus = ({ size = 24 }) => (
+        // Icons
+        const Sun = ({ size = 20 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+        );
+
+        const Moon = ({ size = 20 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        );
+
+        const Plus = ({ size = 20 }) => (
             <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <line x1="5" y1="12" x2="19" y2="12"></line>
             </svg>
         );
 
-        const Trash2 = ({ size = 24 }) => (
+        const Trash2 = ({ size = 20 }) => (
             <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="3 6 5 6 21 6"></polyline>
                 <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -39,56 +617,14 @@
             </svg>
         );
 
-        const Calendar = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="16" y1="2" x2="16" y2="6"></line>
-                <line x1="8" y1="2" x2="8" y2="6"></line>
-                <line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
-        );
+        const ActivityTracker = () => {
+            const [isDark, setIsDark] = useState(false);
+            const [viewMode, setViewMode] = useState('dashboard');
+            const completionChartRef = useRef(null);
+            const timeChartRef = useRef(null);
+            const completionChartInstance = useRef(null);
+            const timeChartInstance = useRef(null);
 
-        const CheckCircle = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-            </svg>
-        );
-
-        const Clock = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
-            </svg>
-        );
-
-        const TrendingUp = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                <polyline points="17 6 23 6 23 12"></polyline>
-            </svg>
-        );
-
-        const ChevronDown = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-        );
-
-        const ChevronRight = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-        );
-
-        const X = ({ size = 24 }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-        );
-
-        const TaskTrackerDashboard = () => {
             const [tasks, setTasks] = useState([
                 { 
                     date: '18 January', 
@@ -96,18 +632,14 @@
                     subtasks: [
                         { time: '9am-1pm', name: 'Class', done: false },
                         { time: '2pm-4pm', name: 'Revision', done: false }
-                    ],
-                    allDone: false,
-                    expanded: false
+                    ]
                 },
                 { 
                     date: '19 January', 
                     day: 'Monday', 
                     subtasks: [
-                        { time: '10am-12pm', name: '2 S & ML', done: false }
-                    ],
-                    allDone: false,
-                    expanded: false
+                        { time: '10am-12pm', name: 'S & ML', done: false }
+                    ]
                 },
                 { 
                     date: '20 January', 
@@ -115,763 +647,1257 @@
                     subtasks: [
                         { time: '9am-1pm', name: 'Class', done: false },
                         { time: '8pm-10:30pm', name: 'Different Class', done: false }
-                    ],
-                    allDone: false,
-                    expanded: false
-                },
+                    ]
+                }
             ]);
+            
+
+            const [timetable, setTimetable] = useState({
+                weekday: [
+                    { time: '8-11', activity: 'Last day class' },
+                    { time: '11-12', activity: 'Breakfast + travel' },
+                    { time: '12-4', activity: 'Stat & ML revision' },
+                    { time: '4-7', activity: 'Stat & ML revision' },
+                    { time: '7-8', activity: 'Break / freshen up' },
+                    { time: '8-10', activity: 'Daily class' },
+                    { time: '10:30-11:30', activity: 'Dinner + mobile' },
+                    { time: '11:30-12:45', activity: 'Revision + notes' },
+                    { time: '12:45-2:30', activity: 'Namaz + mobile' }
+                ],
+                weekend: [
+                    { time: '9-1:30', activity: 'Stat & ML revision' },
+                    { time: '1:30-3', activity: 'Bath, lunch, rest' },
+                    { time: '4-6', activity: 'LinkedIn, resume' },
+                    { time: '7-10', activity: 'Revision' }
+                ]
+            });
 
             const [editingCell, setEditingCell] = useState(null);
             const [editValue, setEditValue] = useState('');
-            const [viewMode, setViewMode] = useState('dashboard');
-            const [showAddTaskModal, setShowAddTaskModal] = useState(null);
-            const [newSubtask, setNewSubtask] = useState({ time: '', name: '' });
-            
-            // Timetable state
-            const [timetable, setTimetable] = useState({
-                weekday: [
-                    { time: '8 to 11', activity: 'Last day class' },
-                    { time: '11 to 12', activity: 'Breakfast + travel to didi\'s home' },
-                    { time: '12 to 4', activity: 'Stat & ML revision' },
-                    { time: '4 to 7', activity: 'Stat & ML revision' },
-                    { time: '7 to 8', activity: 'Break / freshen up / light rest' },
-                    { time: '8 to 10', activity: 'Daily class' },
-                    { time: '10:30 to 11.30', activity: 'Dinner + mobile time' },
-                    { time: '11:30 to 12:45', activity: 'Revision + note making' },
-                    { time: '12:45 to 2:30', activity: 'Namaz + mobile' }
-                ],
-                weekend: [
-                    { time: '9 to 1.30', activity: 'Stat & ML revision' },
-                    { time: '1.30 to 3', activity: 'bath, lunch, rest' },
-                    { time: '4 to 6', activity: 'linkdin, resume, explore' },
-                    { time: '7 to 10', activity: 'revision' }
-                ]
-            });
-            const [editingTimetable, setEditingTimetable] = useState(null);
-            const [showAddTimetableModal, setShowAddTimetableModal] = useState(null);
 
-            const updateTask = (index, field, value) => {
-                const updatedTasks = [...tasks];
-                updatedTasks[index][field] = value;
-                setTasks(updatedTasks);
+            const totalSubtasks = tasks.reduce((acc, t) => acc + t.subtasks.length, 0);
+            const completedSubtasks = tasks.reduce((acc, t) => 
+                acc + t.subtasks.filter(st => st.done).length, 0);
+            const completionRate = totalSubtasks > 0 ? ((completedSubtasks / totalSubtasks) * 100).toFixed(1) : 0;
+            const avgTasksPerDay = tasks.length > 0 ? (totalSubtasks / tasks.length).toFixed(1) : 0;
+            const productivityScore = tasks.length > 0 ? (completedSubtasks / tasks.length).toFixed(1) : 0;
+
+            useEffect(() => {
+                document.body.className = isDark ? 'dark-theme' : 'light-theme';
+            }, [isDark]);
+
+            useEffect(() => {
+                if (viewMode === 'dashboard') {
+                    setTimeout(updateCharts, 100);
+                }
+                return () => {
+                    if (completionChartInstance.current) completionChartInstance.current.destroy();
+                    if (timeChartInstance.current) timeChartInstance.current.destroy();
+                };
+            }, [viewMode, tasks, isDark]);
+
+            const updateCharts = () => {
+    const style = getComputedStyle(document.body);
+    const textColor = style.getPropertyValue('--text-primary').trim();
+    const borderColor = style.getPropertyValue('--border-color').trim();
+    const chart1 = style.getPropertyValue('--chart-1').trim();
+    const chart2 = style.getPropertyValue('--chart-2').trim();
+    const successColor = style.getPropertyValue('--success').trim();
+    const warningColor = style.getPropertyValue('--warning').trim();
+    
+    if (completionChartRef.current) {
+        if (completionChartInstance.current) completionChartInstance.current.destroy();
+        const ctx = completionChartRef.current.getContext('2d');
+        completionChartInstance.current = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Completed', 'Pending'],
+                datasets: [{
+                    data: [completedSubtasks, totalSubtasks - completedSubtasks],
+                    backgroundColor: [successColor, warningColor],
+                    borderWidth: 0,
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { 
+                            color: textColor, 
+                            padding: 20, 
+                            font: { size: 14, weight: '600', family: 'Inter' },
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+    }
+
+    if (timeChartRef.current) {
+        if (timeChartInstance.current) timeChartInstance.current.destroy();
+        const tasksByDay = tasks.map(task => ({ day: task.day || 'Unknown', count: task.subtasks.length }));
+        const ctx = timeChartRef.current.getContext('2d');
+        timeChartInstance.current = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: tasksByDay.map(t => t.day),
+                datasets: [{
+                    label: 'Tasks per Day',
+                    data: tasksByDay.map(t => t.count),
+                    backgroundColor: chart1,
+                    borderRadius: 8,
+                    barThickness: 50,
+                    hoverBackgroundColor: chart2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { 
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: style.getPropertyValue('--bg-card').trim(),
+                        titleColor: textColor,
+                        bodyColor: textColor,
+                        borderColor: borderColor,
+                        borderWidth: 1,
+                        padding: 12,
+                        displayColors: false,
+                        titleFont: { size: 14, weight: '600', family: 'Inter' },
+                        bodyFont: { size: 13, family: 'Inter' }
+                    }
+                },
+                scales: {
+                    y: { 
+                        beginAtZero: true, 
+                        ticks: { color: textColor, stepSize: 1, font: { size: 13, family: 'Inter' } }, 
+                        grid: { color: borderColor, lineWidth: 1 },
+                        border: { display: false }
+                    },
+                    x: { 
+                        ticks: { color: textColor, font: { size: 13, weight: '600', family: 'Inter' } }, 
+                        grid: { display: false },
+                        border: { display: false }
+                    }
+                }
+            }
+        });
+    }
+};
+
+            const ProgressRing = ({ progress, size = 120, strokeWidth = 10 }) => {
+                const radius = (size - strokeWidth) / 2;
+                const circumference = radius * 2 * Math.PI;
+                const offset = circumference - (progress / 100) * circumference;
+
+                return (
+                    <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
+                        <circle cx={size/2} cy={size/2} r={radius} fill="none" stroke="var(--bg-tertiary)" strokeWidth={strokeWidth} />
+                        <circle cx={size/2} cy={size/2} r={radius} fill="none" stroke="var(--accent-primary)" strokeWidth={strokeWidth}
+                            strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round" 
+                            style={{ transition: 'stroke-dashoffset 0.5s ease' }} />
+                        <text x="50%" y="50%" textAnchor="middle" dy=".3em" className="theme-text-primary"
+                            style={{ fontSize: '24px', fontWeight: '700', transform: 'rotate(90deg)', transformOrigin: '50% 50%' }}>
+                            {progress}%
+                        </text>
+                    </svg>
+                );
             };
 
-            const toggleExpand = (index) => {
-                const updatedTasks = [...tasks];
-                updatedTasks[index].expanded = !updatedTasks[index].expanded;
-                setTasks(updatedTasks);
+            const addTask = () => {
+                setTasks([...tasks, { date: '', day: '', subtasks: [] }]);
             };
 
-            const toggleSubtask = (taskIndex, subtaskIndex) => {
-                const updatedTasks = [...tasks];
-                updatedTasks[taskIndex].subtasks[subtaskIndex].done = !updatedTasks[taskIndex].subtasks[subtaskIndex].done;
-                
-                const allDone = updatedTasks[taskIndex].subtasks.every(st => st.done);
-                updatedTasks[taskIndex].allDone = allDone;
-                
-                setTasks(updatedTasks);
+            const deleteTask = (index) => {
+                setTasks(tasks.filter((_, i) => i !== index));
             };
 
-            const toggleAllDone = (taskIndex) => {
-                const updatedTasks = [...tasks];
-                const newAllDoneState = !updatedTasks[taskIndex].allDone;
-                updatedTasks[taskIndex].allDone = newAllDoneState;
-                
-                updatedTasks[taskIndex].subtasks.forEach(st => {
-                    st.done = newAllDoneState;
-                });
-                
-                setTasks(updatedTasks);
+            const updateTaskField = (taskIndex, field, value) => {
+                const updated = [...tasks];
+                updated[taskIndex][field] = value;
+                setTasks(updated);
             };
 
             const addSubtask = (taskIndex) => {
-                if (newSubtask.time && newSubtask.name) {
-                    const updatedTasks = [...tasks];
-                    updatedTasks[taskIndex].subtasks.push({ ...newSubtask, done: false });
-                    setTasks(updatedTasks);
-                    setNewSubtask({ time: '', name: '' });
-                    setShowAddTaskModal(null);
-                }
+                const updated = [...tasks];
+                updated[taskIndex].subtasks.push({ time: '', name: '', done: false });
+                setTasks(updated);
+            };
+
+            const updateSubtask = (taskIndex, subtaskIndex, field, value) => {
+                const updated = [...tasks];
+                updated[taskIndex].subtasks[subtaskIndex][field] = value;
+                setTasks(updated);
             };
 
             const deleteSubtask = (taskIndex, subtaskIndex) => {
-                const updatedTasks = [...tasks];
-                updatedTasks[taskIndex].subtasks.splice(subtaskIndex, 1);
-                
-                const allDone = updatedTasks[taskIndex].subtasks.every(st => st.done);
-                updatedTasks[taskIndex].allDone = allDone;
-                
-                setTasks(updatedTasks);
+                const updated = [...tasks];
+                updated[taskIndex].subtasks.splice(subtaskIndex, 1);
+                setTasks(updated);
             };
 
-            const startEdit = (index, field, value) => {
-                setEditingCell(`${index}-${field}`);
+            const toggleSubtask = (taskIndex, subtaskIndex) => {
+                const updated = [...tasks];
+                updated[taskIndex].subtasks[subtaskIndex].done = !updated[taskIndex].subtasks[subtaskIndex].done;
+                setTasks(updated);
+            };
+
+            const updateTimetable = (type, index, field, value) => {
+                const updated = { ...timetable };
+                updated[type][index][field] = value;
+                setTimetable(updated);
+            };
+
+            const addTimetableEntry = (type) => {
+                const updated = { ...timetable };
+                updated[type].push({ time: '', activity: '' });
+                setTimetable(updated);
+            };
+
+            const deleteTimetableEntry = (type, index) => {
+                const updated = { ...timetable };
+                updated[type].splice(index, 1);
+                setTimetable(updated);
+            };
+
+            const startEdit = (id, value) => {
+                setEditingCell(id);
                 setEditValue(value);
             };
 
-            const finishEdit = (index, field) => {
-                updateTask(index, field, editValue);
+            const finishEdit = (callback) => {
+                callback(editValue);
                 setEditingCell(null);
                 setEditValue('');
             };
 
-            const addRow = () => {
-                setTasks([...tasks, { 
-                    date: '', 
-                    day: '', 
-                    subtasks: [],
-                    allDone: false,
-                    expanded: true
-                }]);
-            };
-
-            const deleteRow = (index) => {
-                setTasks(tasks.filter((_, i) => i !== index));
-            };
-
-            const handleKeyPress = (e, index, field) => {
+            const handleKeyPress = (e, callback) => {
                 if (e.key === 'Enter') {
-                    finishEdit(index, field);
+                    finishEdit(callback);
                 } else if (e.key === 'Escape') {
                     setEditingCell(null);
                     setEditValue('');
                 }
             };
+            // Add these functions before the return statement in ActivityTracker component
 
-            // Timetable functions
-            const updateTimetableEntry = (dayType, index, field, value) => {
-                const updatedTimetable = { ...timetable };
-                updatedTimetable[dayType][index][field] = value;
-                setTimetable(updatedTimetable);
-            };
+// Confetti effect
+const triggerConfetti = () => {
+    const colors = ['var(--accent-primary)', 'var(--accent-secondary)', 'var(--success)', 'var(--warning)', '#ec4899'];
+    for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animationDelay = Math.random() * 0.5 + 's';
+            confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            document.body.appendChild(confetti);
+            setTimeout(() => confetti.remove(), 3000);
+        }, i * 30);
+    }
+};
 
-            const deleteTimetableEntry = (dayType, index) => {
-                const updatedTimetable = { ...timetable };
-                updatedTimetable[dayType].splice(index, 1);
-                setTimetable(updatedTimetable);
-            };
+// Get today's date in same format as tasks
+const getTodayString = () => {
+    const today = new Date();
+    const day = today.getDate();
+    const month = today.toLocaleString('en-US', { month: 'long' });
+    return `${day} ${month}`;
+};
 
-            const addTimetableEntry = (dayType) => {
-                const updatedTimetable = { ...timetable };
-                updatedTimetable[dayType].push({ time: '', activity: '' });
-                setTimetable(updatedTimetable);
-            };
+// Get today's day name
+const getTodayDayName = () => {
+    return new Date().toLocaleString('en-US', { weekday: 'long' });
+};
 
-            const startEditTimetable = (dayType, index, field, value) => {
-                setEditingTimetable(`${dayType}-${index}-${field}`);
-                setEditValue(value);
-            };
+// Find today's task
+const getTodayTask = () => {
+    const todayDate = getTodayString();
+    const todayDay = getTodayDayName();
+    
+    // Try to find by exact date match first
+    let todayTask = tasks.find(task => task.date === todayDate);
+    
+    // If not found, try to find by day name
+    if (!todayTask) {
+        todayTask = tasks.find(task => task.day === todayDay);
+    }
+    
+    return todayTask;
+};
 
-            const finishEditTimetable = (dayType, index, field) => {
-                updateTimetableEntry(dayType, index, field, editValue);
-                setEditingTimetable(null);
-                setEditValue('');
-            };
+// Calculate today's stats
+const getTodayStats = () => {
+    const todayTask = getTodayTask();
+    
+    if (!todayTask) {
+        return { total: 0, completed: 0, rate: 0, exists: false };
+    }
+    
+    const total = todayTask.subtasks.length;
+    const completed = todayTask.subtasks.filter(st => st.done).length;
+    const rate = total > 0 ? ((completed / total) * 100).toFixed(0) : 0;
+    
+    return { total, completed, rate: parseFloat(rate), exists: true };
+};
 
-            const handleTimetableKeyPress = (e, dayType, index, field) => {
-                if (e.key === 'Enter') {
-                    finishEditTimetable(dayType, index, field);
-                } else if (e.key === 'Escape') {
-                    setEditingTimetable(null);
-                    setEditValue('');
-                }
-            };
+// Check for task completion and trigger celebration
+const checkTaskCompletion = (taskIndex, subtaskIndex) => {
+    toggleSubtask(taskIndex, subtaskIndex);
+    
+    // Check if this is today's task and if completion makes it 100% done
+    setTimeout(() => {
+        const task = tasks[taskIndex];
+        const todayTask = getTodayTask();
+        
+        // Only celebrate if this is today's task
+        if (todayTask && task === todayTask) {
+            const completed = task.subtasks.filter(st => st.done).length;
+            const total = task.subtasks.length;
+            
+            if (completed === total && total > 0) {
+                triggerConfetti();
+            }
+        }
+    }, 100);
+};
 
-            const totalTasks = tasks.length;
-            const completedTasks = tasks.filter(t => t.allDone).length;
-            const pendingTasks = totalTasks - completedTasks;
-            const completionRate = totalTasks > 0 ? ((completedTasks / totalTasks) * 100).toFixed(1) : 0;
+// Get performance level
+const getPerformanceLevel = (rate) => {
+    if (rate >= 90) return { level: 'Exceptional', emoji: '🌟', color: 'var(--success)', bg: 'var(--success-light)' };
+    if (rate >= 75) return { level: 'Excellent', emoji: '🎯', color: 'var(--info)', bg: 'var(--info-light)' };
+    if (rate >= 60) return { level: 'Good', emoji: '👍', color: 'var(--accent-primary)', bg: 'var(--accent-primary-light)' };
+    if (rate >= 40) return { level: 'Fair', emoji: '📈', color: 'var(--warning)', bg: 'var(--warning-light)' };
+    return { level: 'Needs Focus', emoji: '💪', color: 'var(--danger)', bg: 'var(--danger-light)' };
+};
 
-            const totalSubtasks = tasks.reduce((acc, task) => acc + task.subtasks.length, 0);
-            const completedSubtasks = tasks.reduce((acc, task) => 
-                acc + task.subtasks.filter(st => st.done).length, 0);
+// Get motivational message based on TODAY's performance
+const getTodayMotivation = (rate, completed, total) => {
+    if (rate >= 100) return {
+        title: "Perfect Day! 🎉",
+        message: "You've completed all your tasks for today! Amazing work!",
+        tip: "Tomorrow, try adding one more challenging task to keep growing."
+    };
+    if (rate >= 75) return {
+        title: "Great Progress Today! ⭐",
+        message: `${completed} out of ${total} tasks done. You're having a productive day!`,
+        tip: "You're almost there! Finish the remaining tasks to make it a perfect day."
+    };
+    if (rate >= 50) return {
+        title: "Keep Going! 💪",
+        message: `${completed} tasks completed. You're halfway through today's goals!`,
+        tip: "Take a short break, then tackle the next task with fresh energy."
+    };
+    if (rate >= 25) return {
+        title: "Good Start! 🌱",
+        message: `${completed} tasks done. Every small step counts!`,
+        tip: "Focus on completing just one more task right now. You've got this!"
+    };
+    if (completed > 0) return {
+        title: "You've Started! 👏",
+        message: `${completed} task completed today. Momentum is building!`,
+        tip: "The hardest part is starting - and you've already done that. Keep going!"
+    };
+    return {
+        title: "Ready to Begin? 🚀",
+        message: "Your tasks for today are waiting. Let's make it count!",
+        tip: "Start with the easiest task to build momentum, or tackle the hardest one first."
+    };
+};
 
-            const tasksByDay = tasks.reduce((acc, task) => {
-                const day = task.day || 'Unknown';
-                acc[day] = (acc[day] || 0) + 1;
-                return acc;
-            }, {});
+// Get TODAY's productivity tips
+const getTodayProductivityTips = (stats) => {
+    const tips = [];
+    const currentHour = new Date().getHours();
+    
+    if (!stats.exists) {
+        tips.push({ icon: '📅', text: 'No tasks set for today yet. Add your daily goals to get started!' });
+        return tips;
+    }
+    
+    if (stats.rate === 100) {
+        tips.push({ icon: '🏆', text: 'Perfect day! All tasks completed. Time to relax or add bonus tasks!' });
+    } else if (stats.completed === 0 && stats.total > 0) {
+        if (currentHour < 12) {
+            tips.push({ icon: '🌅', text: 'Morning energy is high! Start with your most important task.' });
+        } else if (currentHour < 17) {
+            tips.push({ icon: '☀️', text: 'Afternoon focus time! Block distractions and dive into your tasks.' });
+        } else {
+            tips.push({ icon: '🌙', text: 'Evening hours! Pick an easy task to get started and build momentum.' });
+        }
+    } else if (stats.completed > 0 && stats.completed < stats.total) {
+        const remaining = stats.total - stats.completed;
+        tips.push({ icon: '⚡', text: `${remaining} task${remaining > 1 ? 's' : ''} remaining today. You're making progress!` });
+    }
+    
+    if (stats.total > 5) {
+        tips.push({ icon: '🎯', text: 'Busy day ahead! Prioritize your top 3 most important tasks.' });
+    }
+    
+    if (stats.rate >= 50 && stats.rate < 100) {
+        tips.push({ icon: '🔥', text: 'You\'re on fire! Finish strong and complete all tasks today.' });
+    }
+    
+    return tips;
+};
 
-            const recentTasks = tasks.slice(-7);
-
-            const isPartiallyDone = (task) => {
-                const doneCount = task.subtasks.filter(st => st.done).length;
-                return doneCount > 0 && doneCount < task.subtasks.length;
-            };
+// Calculate streak of perfect days
+const calculateStreak = () => {
+    let streak = 0;
+    // Start from most recent day and go backwards
+    for (let i = tasks.length - 1; i >= 0; i--) {
+        const task = tasks[i];
+        const completed = task.subtasks.filter(st => st.done).length;
+        const total = task.subtasks.length;
+        if (total > 0 && completed === total) {
+            streak++;
+        } else if (total > 0) {
+            break;
+        }
+    }
+    return streak;
+};
 
             return (
-                <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-6">
-                    <div className="max-w-7xl mx-auto">
-                        <div className="mb-6">
-                            <h1 className="text-4xl font-bold text-white mb-2">Daily Activity Tracker</h1>
-                            <p className="text-purple-200">Monitor and manage your daily tasks with insights</p>
+                <div className="theme-bg-primary min-h-screen" style={{ padding: '20px 24px' }}>
+                    <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+                        {/* Header */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                            <div>
+                                <h1 className="theme-text-primary" style={{ fontSize: '28px', fontWeight: '600', margin: '0 0 4px 0' }}>
+                                    Daily Activity Tracker
+                                </h1>
+                                <p className="theme-text-muted" style={{ fontSize: '15px', margin: 0 }}>
+                                    Manage your tasks and schedule
+                                </p>
+                            </div>
+                            <button
+                                onClick={() => setIsDark(!isDark)}
+                                className="theme-bg-secondary theme-text-primary"
+                                style={{
+                                    padding: '10px 12px',
+                                    border: '1px solid var(--border-color)',
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '8px',
+                                    fontSize: '15px',
+                                    fontWeight: '500'
+                                }}
+                            >
+                                {isDark ? <Sun size={18} /> : <Moon size={18} />}
+                                {isDark ? 'Light' : 'Dark'}
+                            </button>
                         </div>
 
-                        <div className="mb-6 flex gap-3">
+                        {/* View Toggle */}
+                        <div style={{ display: 'flex', gap: '12px', marginBottom: '20px' }}>
                             <button
                                 onClick={() => setViewMode('dashboard')}
-                                className={`px-6 py-3 rounded-lg font-semibold transition-all ${
-                                    viewMode === 'dashboard'
-                                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/50'
-                                        : 'bg-white/10 text-white hover:bg-white/20'
-                                }`}
+                                className={viewMode === 'dashboard' ? 'theme-accent' : 'theme-bg-secondary'}
+                                style={{
+                                    padding: '10px 20px',
+                                    border: '1px solid var(--border-color)',
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    fontSize: '15px',
+                                    fontWeight: '500',
+                                    color: viewMode === 'dashboard' ? '#ffffff' : 'var(--text-primary)'
+                                }}
                             >
-                                📊 Dashboard View
+                                📊 Dashboard
                             </button>
                             <button
-                                onClick={() => setViewMode('table')}
-                                className={`px-6 py-3 rounded-lg font-semibold transition-all ${
-                                    viewMode === 'table'
-                                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/50'
-                                        : 'bg-white/10 text-white hover:bg-white/20'
-                                }`}
+                                onClick={() => setViewMode('tasks')}
+                                className={viewMode === 'tasks' ? 'theme-accent' : 'theme-bg-secondary'}
+                                style={{
+                                    padding: '10px 20px',
+                                    border: '1px solid var(--border-color)',
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    fontSize: '15px',
+                                    fontWeight: '500',
+                                    color: viewMode === 'tasks' ? '#ffffff' : 'var(--text-primary)'
+                                }}
                             >
-                                📋 Table View
+                                📋 Daily Tasks
                             </button>
                             <button
                                 onClick={() => setViewMode('timetable')}
-                                className={`px-6 py-3 rounded-lg font-semibold transition-all ${
-                                    viewMode === 'timetable'
-                                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/50'
-                                        : 'bg-white/10 text-white hover:bg-white/20'
-                                }`}
+                                className={viewMode === 'timetable' ? 'theme-accent' : 'theme-bg-secondary'}
+                                style={{
+                                    padding: '10px 20px',
+                                    border: '1px solid var(--border-color)',
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    fontSize: '15px',
+                                    fontWeight: '500',
+                                    color: viewMode === 'timetable' ? '#ffffff' : 'var(--text-primary)'
+                                }}
                             >
-                                🕐 Timetable View
+                                🕐 Timetable
                             </button>
-                            <button
-                                onClick={addRow}
-                                className="ml-auto px-6 py-3 rounded-lg font-semibold bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 shadow-lg shadow-green-500/50 flex items-center gap-2 transition-all"
-                            >
-                                <Plus size={20} />
-                                Add New Day
-                            </button>
+                            {viewMode === 'tasks' && (
+                                <button
+                                    onClick={addTask}
+                                    style={{
+                                        marginLeft: 'auto',
+                                        padding: '10px 20px',
+                                        border: 'none',
+                                        borderRadius: '8px',
+                                        cursor: 'pointer',
+                                        fontSize: '15px',
+                                        fontWeight: '500',
+                                        backgroundColor: 'var(--success)',
+                                        color: '#ffffff',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '6px'
+                                    }}
+                                >
+                                    <Plus size={18} />
+                                    Add Day
+                                </button>
+                            )}
                         </div>
 
+                        {/* Dashboard View */}
                         {viewMode === 'dashboard' && (
-                            <div className="space-y-6">
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                                    <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 shadow-xl shadow-blue-500/30">
-                                        <div className="flex items-center justify-between mb-4">
-                                            <div className="bg-white/20 p-3 rounded-lg">
-                                                <Calendar size={24} />
-                                            </div>
-                                            <span className="text-blue-100 text-sm font-semibold">TOTAL DAYS</span>
-                                        </div>
-                                        <div className="text-4xl font-bold text-white mb-1">{totalTasks}</div>
-                                        <div className="text-blue-100 text-sm">{totalSubtasks} Total Tasks</div>
-                                    </div>
+                            <div>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '24px' }}>
+    {[
+        { label: 'TOTAL TASKS', value: totalSubtasks, icon: '📝', sub: `Across ${tasks.length} days`, gradient: 'var(--gradient-primary)' },
+        { label: 'COMPLETED', value: completedSubtasks, icon: '✅', sub: `${completionRate}% completion rate`, gradient: 'var(--gradient-success)' },
+        { label: 'PENDING', value: totalSubtasks - completedSubtasks, icon: '⏳', sub: 'Remaining to complete', gradient: 'var(--gradient-warning)' },
+        { label: 'AVG PER DAY', value: avgTasksPerDay, icon: '📈', sub: 'Tasks per day average', gradient: 'var(--gradient-primary)' }
+    ].map((kpi, i) => (
+        <div key={i} className="kpi-card card-elevated" style={{ padding: '24px', borderRadius: '12px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '12px' }}>
+                <div style={{ flex: 1 }}>
+                    <div className="theme-text-muted" style={{ fontSize: '12px', fontWeight: '700', marginBottom: '10px', letterSpacing: '0.05em' }}>{kpi.label}</div>
+                    <div style={{ 
+                        fontSize: '36px', 
+                        fontWeight: '800', 
+                        background: kpi.gradient,
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
+                        lineHeight: '1.2'
+                    }}>
+                        {kpi.value}
+                    </div>
+                </div>
+                <div style={{ 
+                    fontSize: '32px',
+                    background: kpi.gradient,
+                    borderRadius: '12px',
+                    padding: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '56px',
+                    height: '56px'
+                }}>
+                    {kpi.icon}
+                </div>
+            </div>
+            <div className="theme-text-muted" style={{ fontSize: '13px', fontWeight: '500' }}>{kpi.sub}</div>
+        </div>
+    ))}
+</div>
 
-                                    <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl p-6 shadow-xl shadow-green-500/30">
-                                        <div className="flex items-center justify-between mb-4">
-                                            <div className="bg-white/20 p-3 rounded-lg">
-                                                <CheckCircle size={24} />
-                                            </div>
-                                            <span className="text-green-100 text-sm font-semibold">COMPLETED</span>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '20px', marginBottom: '24px' }}>
+                                    <div className="theme-bg-secondary" style={{ padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+                                        <h3 className="theme-text-primary" style={{ margin: '0 0 20px 0', fontSize: '17px', fontWeight: '600' }}>Task Completion Status</h3>
+                                        <div style={{ height: '280px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                            <canvas ref={completionChartRef}></canvas>
                                         </div>
-                                        <div className="text-4xl font-bold text-white mb-1">{completedTasks}</div>
-                                        <div className="text-green-100 text-sm">{completedSubtasks} Tasks Done</div>
                                     </div>
-
-                                    <div className="bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl p-6 shadow-xl shadow-orange-500/30">
-                                        <div className="flex items-center justify-between mb-4">
-                                            <div className="bg-white/20 p-3 rounded-lg">
-                                                <Clock size={24} />
-                                            </div>
-                                            <span className="text-orange-100 text-sm font-semibold">PENDING</span>
+                                    <div className="theme-bg-secondary" style={{ padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+                                        <h3 className="theme-text-primary" style={{ margin: '0 0 20px 0', fontSize: '17px', fontWeight: '600' }}>Tasks Distribution by Day</h3>
+                                        <div style={{ height: '280px' }}>
+                                            <canvas ref={timeChartRef}></canvas>
                                         </div>
-                                        <div className="text-4xl font-bold text-white mb-1">{pendingTasks}</div>
-                                        <div className="text-orange-100 text-sm">{totalSubtasks - completedSubtasks} Tasks Left</div>
-                                    </div>
-
-                                    <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl p-6 shadow-xl shadow-purple-500/30">
-                                        <div className="flex items-center justify-between mb-4">
-                                            <div className="bg-white/20 p-3 rounded-lg">
-                                                <TrendingUp size={24} />
-                                            </div>
-                                            <span className="text-purple-100 text-sm font-semibold">RATE</span>
-                                        </div>
-                                        <div className="text-4xl font-bold text-white mb-1">{completionRate}%</div>
-                                        <div className="text-purple-100 text-sm">Day Completion</div>
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                    <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 shadow-xl border border-white/20">
-                                        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                                            <div className="w-1 h-6 bg-gradient-to-b from-purple-400 to-pink-400 rounded"></div>
-                                            Task Progress
-                                        </h3>
-                                        <div className="space-y-4">
-                                            <div>
-                                                <div className="flex justify-between text-sm mb-2">
-                                                    <span className="text-green-300 font-semibold">Completed Tasks</span>
-                                                    <span className="text-white font-bold">{completedSubtasks}/{totalSubtasks}</span>
-                                                </div>
-                                                <div className="w-full bg-white/10 rounded-full h-3 overflow-hidden">
-                                                    <div
-                                                        className="h-full bg-gradient-to-r from-green-400 to-emerald-500 rounded-full shadow-lg transition-all duration-500"
-                                                        style={{ width: `${totalSubtasks > 0 ? (completedSubtasks / totalSubtasks) * 100 : 0}%` }}
-                                                    ></div>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div className="flex justify-between text-sm mb-2">
-                                                    <span className="text-orange-300 font-semibold">Pending Tasks</span>
-                                                    <span className="text-white font-bold">{totalSubtasks - completedSubtasks}/{totalSubtasks}</span>
-                                                </div>
-                                                <div className="w-full bg-white/10 rounded-full h-3 overflow-hidden">
-                                                    <div
-                                                        className="h-full bg-gradient-to-r from-orange-400 to-red-500 rounded-full shadow-lg transition-all duration-500"
-                                                        style={{ width: `${totalSubtasks > 0 ? ((totalSubtasks - completedSubtasks) / totalSubtasks) * 100 : 0}%` }}
-                                                    ></div>
-                                                </div>
-                                            </div>
+                                <div className="theme-bg-secondary" style={{ padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)', marginBottom: '24px' }}>
+                                    <h3 className="theme-text-primary" style={{ margin: '0 0 20px 0', fontSize: '17px', fontWeight: '600' }}>Overall Progress</h3>
+                                    <div style={{ display: 'flex', gap: '40px', alignItems: 'center', flexWrap: 'wrap' }}>
+                                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+                                            <ProgressRing progress={parseFloat(completionRate)} />
+                                            <div className="theme-text-secondary" style={{ fontSize: '14px', fontWeight: '600' }}>Completion Rate</div>
                                         </div>
-
-                                        <div className="mt-8 flex justify-center">
-                                            <div className="relative w-40 h-40">
-                                                <svg className="transform -rotate-90 w-40 h-40">
-                                                    <circle
-                                                        cx="80"
-                                                        cy="80"
-                                                        r="70"
-                                                        stroke="rgba(255,255,255,0.1)"
-                                                        strokeWidth="12"
-                                                        fill="none"
-                                                    />
-                                                    <circle
-                                                        cx="80"
-                                                        cy="80"
-                                                        r="70"
-                                                        stroke="url(#gradient)"
-                                                        strokeWidth="12"
-                                                        fill="none"
-                                                        strokeDasharray={`${2 * Math.PI * 70}`}
-                                                        strokeDashoffset={`${2 * Math.PI * 70 * (1 - completionRate / 100)}`}
-                                                        strokeLinecap="round"
-                                                        className="transition-all duration-500"
-                                                    />
-                                                    <defs>
-                                                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                                            <stop offset="0%" stopColor="#a855f7" />
-                                                            <stop offset="100%" stopColor="#ec4899" />
-                                                        </linearGradient>
-                                                    </defs>
-                                                </svg>
-                                                <div className="absolute inset-0 flex items-center justify-center flex-col">
-                                                    <span className="text-3xl font-bold text-white">{completionRate}%</span>
-                                                    <span className="text-purple-200 text-xs">Complete</span>
+                                        <div style={{ flex: 1, minWidth: '300px' }}>
+                                            <div style={{ marginBottom: '20px' }}>
+                                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                                                    <span className="theme-text-secondary" style={{ fontSize: '14px', fontWeight: '500' }}>Completed Tasks</span>
+                                                    <span className="theme-text-primary" style={{ fontSize: '14px', fontWeight: '600' }}>{completedSubtasks} / {totalSubtasks}</span>
+                                                </div>
+                                                <div style={{ height: '10px', backgroundColor: 'var(--bg-tertiary)', borderRadius: '5px', overflow: 'hidden' }}>
+                                                    <div style={{ height: '100%', width: `${completionRate}%`, backgroundColor: 'var(--success)', 
+                                                        transition: 'width 0.5s ease', borderRadius: '5px' }}></div>
+                                                </div>
+                                            </div>
+                                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                                                <div className="theme-bg-tertiary" style={{ padding: '16px', borderRadius: '8px' }}>
+                                                    <div className="theme-text-muted" style={{ fontSize: '12px', fontWeight: '600', marginBottom: '6px' }}>PRODUCTIVITY SCORE</div>
+                                                    <div className="theme-text-primary" style={{ fontSize: '24px', fontWeight: '700' }}>{productivityScore}</div>
+                                                    <div className="theme-text-muted" style={{ fontSize: '11px', marginTop: '4px' }}>Tasks/day completed</div>
+                                                </div>
+                                                <div className="theme-bg-tertiary" style={{ padding: '16px', borderRadius: '8px' }}>
+                                                    <div className="theme-text-muted" style={{ fontSize: '12px', fontWeight: '600', marginBottom: '6px' }}>ACTIVE DAYS</div>
+                                                    <div className="theme-text-primary" style={{ fontSize: '24px', fontWeight: '700' }}>{tasks.length}</div>
+                                                    <div className="theme-text-muted" style={{ fontSize: '11px', marginTop: '4px' }}>Days with tasks</div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 shadow-xl border border-white/20">
-                                        <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                                            <div className="w-1 h-6 bg-gradient-to-b from-blue-400 to-cyan-400 rounded"></div>
-                                            Days by Week
-                                        </h3>
-                                        <div className="space-y-3">
-                                            {Object.entries(tasksByDay).map(([day, count]) => (
-                                                <div key={day} className="flex items-center gap-3">
-                                                    <div className="w-24 text-sm font-semibold text-purple-200">{day}</div>
-                                                    <div className="flex-1 bg-white/10 rounded-full h-8 overflow-hidden">
-                                                        <div
-                                                            className="h-full bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full flex items-center px-3 transition-all duration-500"
-                                                            style={{ width: `${(count / totalTasks) * 100}%` }}
-                                                        >
-                                                            <span className="text-white text-xs font-bold">{count}</span>
+                                <div className="theme-bg-secondary" style={{ padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+                                    <h3 className="theme-text-primary" style={{ margin: '0 0 20px 0', fontSize: '17px', fontWeight: '600' }}>Recent Activity</h3>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                        {tasks.slice(0, 5).map((task, idx) => {
+                                            const taskCompleted = task.subtasks.filter(st => st.done).length;
+                                            const taskTotal = task.subtasks.length;
+                                            const taskRate = taskTotal > 0 ? ((taskCompleted / taskTotal) * 100).toFixed(0) : 0;
+                                            return (
+                                                <div key={idx} className="theme-bg-tertiary" style={{ padding: '16px', borderRadius: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                    <div>
+                                                        <div className="theme-text-primary" style={{ fontSize: '15px', fontWeight: '600', marginBottom: '4px' }}>
+                                                            {task.date} - {task.day}
+                                                        </div>
+                                                        <div className="theme-text-muted" style={{ fontSize: '13px' }}>
+                                                            {taskCompleted} of {taskTotal} tasks completed
                                                         </div>
                                                     </div>
+                                                    <div style={{ padding: '6px 12px', borderRadius: '6px',
+                                                        backgroundColor: taskRate == 100 ? 'var(--success)' : taskRate >= 50 ? 'var(--warning)' : 'var(--danger)',
+                                                        color: '#ffffff', fontSize: '14px', fontWeight: '600' }}>
+                                                        {taskRate}%
+                                                    </div>
                                                 </div>
-                                            ))}
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Tasks View */}
+{viewMode === 'tasks' && (
+    <div>
+        {/* TODAY'S Performance Banner */}
+        {(() => {
+            const todayStats = getTodayStats();
+            
+            if (!todayStats.exists) {
+                return (
+                    <div className="celebration-banner" style={{
+                        background: 'linear-gradient(135deg, var(--accent-primary-light) 0%, var(--bg-secondary) 100%)',
+                        borderColor: 'var(--accent-primary)'
+                    }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                            <div style={{ fontSize: '48px' }}>📅</div>
+                            <div style={{ flex: 1 }}>
+                                <h3 className="theme-text-primary" style={{ margin: '0 0 8px 0', fontSize: '24px', fontWeight: '700' }}>
+                                    No Tasks for Today Yet
+                                </h3>
+                                <p className="theme-text-secondary" style={{ margin: 0, fontSize: '16px' }}>
+                                    Today is {getTodayDayName()}, {getTodayString()}. Add tasks for today to start tracking your progress!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+            
+            return todayStats.rate === 100 ? (
+                <div className="celebration-banner" style={{
+                    background: 'var(--gradient-success)',
+                    color: 'white',
+                    borderColor: 'var(--success)'
+                }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <div className="celebrate-icon" style={{ fontSize: '48px' }}>🎉</div>
+                        <div style={{ flex: 1 }}>
+                            <h3 style={{ margin: '0 0 8px 0', fontSize: '24px', fontWeight: '700' }}>
+                                Today's Perfect Score! All Tasks Completed! 🌟
+                            </h3>
+                            <p style={{ margin: 0, fontSize: '16px', opacity: 0.95 }}>
+                                Outstanding! You've completed all {todayStats.total} tasks for {getTodayDayName()}. Enjoy your achievement!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                <div className="celebration-banner" style={{
+                    background: `linear-gradient(135deg, ${getPerformanceLevel(todayStats.rate).bg} 0%, var(--bg-secondary) 100%)`,
+                    borderColor: getPerformanceLevel(todayStats.rate).color
+                }}>
+                    <div style={{ marginBottom: '16px', paddingBottom: '16px', borderBottom: '1px solid var(--border-color)' }}>
+                        <div className="theme-text-muted" style={{ fontSize: '13px', fontWeight: '600', marginBottom: '4px' }}>
+                            TODAY - {getTodayDayName()}, {getTodayString()}
+                        </div>
+                    </div>
+                    
+                    <div style={{ display: 'flex', alignItems: 'start', gap: '20px', flexWrap: 'wrap' }}>
+                        <div style={{ flex: 1, minWidth: '300px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                                <div style={{ fontSize: '36px' }}>
+                                    {getPerformanceLevel(todayStats.rate).emoji}
+                                </div>
+                                <div>
+                                    <h3 className="theme-text-primary" style={{ margin: '0 0 4px 0', fontSize: '22px', fontWeight: '700' }}>
+                                        {getTodayMotivation(todayStats.rate, todayStats.completed, todayStats.total).title}
+                                    </h3>
+                                    <p className="theme-text-secondary" style={{ margin: 0, fontSize: '15px' }}>
+                                        {getTodayMotivation(todayStats.rate, todayStats.completed, todayStats.total).message}
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div className="tip-card">
+                                <div style={{ display: 'flex', alignItems: 'start', gap: '12px' }}>
+                                    <div style={{ fontSize: '24px' }}>💡</div>
+                                    <div>
+                                        <div className="theme-text-primary" style={{ fontWeight: '600', fontSize: '14px', marginBottom: '4px' }}>
+                                            Today's Tip
+                                        </div>
+                                        <div className="theme-text-secondary" style={{ fontSize: '14px' }}>
+                                            {getTodayMotivation(todayStats.rate, todayStats.completed, todayStats.total).tip}
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', minWidth: '200px' }}>
+                            <div className="progress-badge" style={{
+                                background: getPerformanceLevel(todayStats.rate).bg,
+                                color: getPerformanceLevel(todayStats.rate).color,
+                                border: `2px solid ${getPerformanceLevel(todayStats.rate).color}`
+                            }}>
+                                <span style={{ fontSize: '20px' }}>{getPerformanceLevel(todayStats.rate).emoji}</span>
+                                <span>{getPerformanceLevel(todayStats.rate).level}</span>
+                            </div>
+                            
+                            {calculateStreak() > 0 && (
+                                <div className="streak-indicator">
+                                    <span>🔥</span>
+                                    <span>{calculateStreak()} Day Streak!</span>
+                                </div>
+                            )}
+                            
+                            <div style={{
+                                background: 'var(--bg-card)',
+                                padding: '16px',
+                                borderRadius: '8px',
+                                border: '2px solid var(--border-color)'
+                            }}>
+                                <div className="theme-text-muted" style={{ fontSize: '12px', fontWeight: '600', marginBottom: '8px' }}>
+                                    TODAY'S PROGRESS
+                                </div>
+                                <div className="theme-text-primary" style={{ fontSize: '32px', fontWeight: '800', marginBottom: '8px' }}>
+                                    {todayStats.rate}%
+                                </div>
+                                <div className="theme-text-muted" style={{ fontSize: '12px', marginBottom: '12px' }}>
+                                    {todayStats.completed} of {todayStats.total} tasks done
+                                </div>
+                                <div style={{ 
+                                    height: '8px', 
+                                    backgroundColor: 'var(--bg-tertiary)', 
+                                    borderRadius: '4px', 
+                                    overflow: 'hidden' 
+                                }}>
+                                    <div style={{ 
+                                        height: '100%', 
+                                        width: `${todayStats.rate}%`, 
+                                        background: getPerformanceLevel(todayStats.rate).color,
+                                        transition: 'width 0.5s ease', 
+                                        borderRadius: '4px' 
+                                    }}></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* Today's Productivity Tips */}
+                    {getTodayProductivityTips(todayStats).length > 0 && (
+                        <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid var(--border-color)' }}>
+                            <div className="theme-text-primary" style={{ fontSize: '14px', fontWeight: '700', marginBottom: '12px' }}>
+                                📈 Today's Insights
+                            </div>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '8px' }}>
+                                {getTodayProductivityTips(todayStats).map((tip, idx) => (
+                                    <div key={idx} style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '8px',
+                                        padding: '10px 14px',
+                                        background: 'var(--bg-card)',
+                                        borderRadius: '8px',
+                                        fontSize: '13px',
+                                        border: '1px solid var(--border-color)'
+                                    }}>
+                                        <span style={{ fontSize: '18px' }}>{tip.icon}</span>
+                                        <span className="theme-text-secondary" style={{ fontWeight: '500' }}>{tip.text}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        })()}
 
-                                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 shadow-xl border border-white/20">
-                                    <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                                        <div className="w-1 h-6 bg-gradient-to-b from-yellow-400 to-orange-400 rounded"></div>
-                                        Recent Activity (Last 7 Days)
-                                    </h3>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                        {recentTasks.map((task, idx) => (
-                                            <div
-                                                key={idx}
-                                                className={`p-4 rounded-xl border-2 transition-all ${
-                                                    task.allDone
-                                                        ? 'bg-green-500/20 border-green-400/50'
-                                                        : isPartiallyDone(task)
-                                                        ? 'bg-yellow-500/20 border-yellow-400/50'
-                                                        : 'bg-orange-500/20 border-orange-400/50'
-                                                }`}
-                                            >
-                                                <div className="flex items-start justify-between mb-2">
-                                                    <div className="text-white font-semibold text-sm">{task.date}</div>
-                                                    {task.allDone && <CheckCircle size={18} />}
+        {/* Tasks Table */}
+        <div className="theme-bg-secondary" style={{ borderRadius: '10px', border: '1px solid var(--border-color)', overflow: 'hidden', marginTop: '20px' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead>
+                    <tr>
+                        <th className="table-header theme-text-primary" style={{ width: '50px', textAlign: 'center' }}>#</th>
+                        <th className="table-header theme-text-primary" style={{ width: '180px' }}>Date</th>
+                        <th className="table-header theme-text-primary" style={{ width: '140px' }}>Day</th>
+                        <th className="table-header theme-text-primary">Tasks</th>
+                        <th className="table-header theme-text-primary" style={{ width: '120px', textAlign: 'center' }}>Progress</th>
+                        <th className="table-header theme-text-primary" style={{ width: '80px', textAlign: 'center' }}>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {tasks.map((task, taskIdx) => {
+                        const taskCompleted = task.subtasks.filter(st => st.done).length;
+                        const taskTotal = task.subtasks.length;
+                        const taskRate = taskTotal > 0 ? ((taskCompleted / taskTotal) * 100).toFixed(0) : 0;
+                        const perfLevel = getPerformanceLevel(parseFloat(taskRate));
+                        const todayTask = getTodayTask();
+                        const isToday = todayTask === task;
+                        
+                        return (
+                            <tr key={taskIdx} style={{ 
+                                backgroundColor: isToday ? 'var(--accent-primary-light)' : 'transparent',
+                                borderLeft: isToday ? '4px solid var(--accent-primary)' : 'none'
+                            }}>
+                                <td className="table-cell theme-text-secondary" style={{ textAlign: 'center', fontWeight: '600' }}>
+                                    {isToday && <span style={{ marginRight: '4px' }}>📍</span>}
+                                    {taskIdx + 1}
+                                </td>
+                                <td
+                                    className="table-cell theme-text-primary"
+                                    onClick={() => startEdit(`date-${taskIdx}`, task.date)}
+                                    style={{ cursor: 'text', fontWeight: isToday ? '600' : '400' }}
+                                >
+                                    {editingCell === `date-${taskIdx}` ? (
+                                        <input
+                                            type="text"
+                                            value={editValue}
+                                            onChange={(e) => setEditValue(e.target.value)}
+                                            onBlur={() => finishEdit((v) => updateTaskField(taskIdx, 'date', v))}
+                                            onKeyDown={(e) => handleKeyPress(e, (v) => updateTaskField(taskIdx, 'date', v))}
+                                            className="theme-bg-tertiary theme-text-primary"
+                                            style={{
+                                                width: '100%',
+                                                padding: '6px 10px',
+                                                border: '2px solid var(--accent-primary)',
+                                                borderRadius: '4px',
+                                                outline: 'none',
+                                                fontSize: '15px'
+                                            }}
+                                            autoFocus
+                                        />
+                                    ) : (
+                                        <span>
+                                            {task.date || 'Click to edit'}
+                                            {isToday && <span style={{ 
+                                                marginLeft: '8px', 
+                                                fontSize: '11px', 
+                                                fontWeight: '700',
+                                                padding: '2px 6px',
+                                                background: 'var(--accent-primary)',
+                                                color: 'white',
+                                                borderRadius: '4px'
+                                            }}>TODAY</span>}
+                                        </span>
+                                    )}
+                                </td>
+                                <td
+                                    className="table-cell theme-text-primary"
+                                    onClick={() => startEdit(`day-${taskIdx}`, task.day)}
+                                    style={{ cursor: 'text', fontWeight: isToday ? '600' : '400' }}
+                                >
+                                    {editingCell === `day-${taskIdx}` ? (
+                                        <input
+                                            type="text"
+                                            value={editValue}
+                                            onChange={(e) => setEditValue(e.target.value)}
+                                            onBlur={() => finishEdit((v) => updateTaskField(taskIdx, 'day', v))}
+                                            onKeyDown={(e) => handleKeyPress(e, (v) => updateTaskField(taskIdx, 'day', v))}
+                                            className="theme-bg-tertiary theme-text-primary"
+                                            style={{
+                                                width: '100%',
+                                                padding: '6px 10px',
+                                                border: '2px solid var(--accent-primary)',
+                                                borderRadius: '4px',
+                                                outline: 'none',
+                                                fontSize: '15px'
+                                            }}
+                                            autoFocus
+                                        />
+                                    ) : (
+                                        <span>{task.day || 'Click to edit'}</span>
+                                    )}
+                                </td>
+                                <td className="table-cell" style={{ padding: '12px 14px' }}>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                        {task.subtasks.map((subtask, subIdx) => (
+                                            <div key={subIdx} className="compact-row">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={subtask.done}
+                                                    onChange={() => checkTaskCompletion(taskIdx, subIdx)}
+                                                    style={{
+                                                        width: '18px',
+                                                        height: '18px',
+                                                        cursor: 'pointer',
+                                                        accentColor: 'var(--success)'
+                                                    }}
+                                                />
+                                                <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flex: 1 }}>
+                                                    <input
+                                                        type="text"
+                                                        value={subtask.time}
+                                                        onChange={(e) => updateSubtask(taskIdx, subIdx, 'time', e.target.value)}
+                                                        placeholder="Time"
+                                                        className="theme-bg-tertiary theme-text-primary"
+                                                        style={{
+                                                            width: '110px',
+                                                            padding: '6px 10px',
+                                                            border: '1px solid var(--border-color)',
+                                                            borderRadius: '4px',
+                                                            fontSize: '14px',
+                                                            fontWeight: '500'
+                                                        }}
+                                                    />
+                                                    <input
+                                                        type="text"
+                                                        value={subtask.name}
+                                                        onChange={(e) => updateSubtask(taskIdx, subIdx, 'name', e.target.value)}
+                                                        placeholder="Task name"
+                                                        className="theme-bg-tertiary theme-text-primary"
+                                                        style={{
+                                                            flex: 1,
+                                                            padding: '6px 10px',
+                                                            border: '1px solid var(--border-color)',
+                                                            borderRadius: '4px',
+                                                            fontSize: '14px',
+                                                            textDecoration: subtask.done ? 'line-through' : 'none',
+                                                            opacity: subtask.done ? '0.6' : '1'
+                                                        }}
+                                                    />
                                                 </div>
-                                                <div className="text-purple-200 text-xs mb-3">{task.day}</div>
-                                                <div className="space-y-1">
-                                                    {task.subtasks.slice(0, 3).map((st, i) => (
-                                                        <div key={i} className="text-white text-xs flex items-center gap-2">
-                                                            <span className={st.done ? 'line-through text-green-300' : ''}>
-                                                                {st.time}: {st.name}
-                                                            </span>
-                                                        </div>
-                                                    ))}
-                                                    {task.subtasks.length > 3 && (
-                                                        <div className="text-purple-300 text-xs">+{task.subtasks.length - 3} more</div>
-                                                    )}
-                                                </div>
+                                                <button
+                                                    onClick={() => deleteSubtask(taskIdx, subIdx)}
+                                                    style={{
+                                                        padding: '6px',
+                                                        border: 'none',
+                                                        background: 'transparent',
+                                                        cursor: 'pointer',
+                                                        color: 'var(--danger)',
+                                                        borderRadius: '4px'
+                                                    }}
+                                                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-tertiary)'}
+                                                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                                                >
+                                                    <Trash2 size={16} />
+                                                </button>
                                             </div>
                                         ))}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Timetable View */}
-                        {viewMode === 'timetable' && (
-                            <div className="space-y-6">
-                                {/* Monday to Friday Section */}
-                                <div className="bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 overflow-hidden">
-                                    <div className="bg-gradient-to-r from-blue-600 to-cyan-600 px-6 py-4 flex items-center justify-between">
-                                        <h2 className="text-2xl font-bold text-white">Monday to Friday</h2>
                                         <button
-                                            onClick={() => addTimetableEntry('weekday')}
-                                            className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white font-semibold flex items-center gap-2 transition-all"
-                                        >
-                                            <Plus size={18} />
-                                            Add Entry
-                                        </button>
-                                    </div>
-                                    <div className="p-6">
-                                        <div className="space-y-3">
-                                            {timetable.weekday.map((entry, index) => (
-                                                <div key={index} className="flex items-center gap-4 bg-white/5 hover:bg-white/10 p-4 rounded-xl transition-all group">
-                                                    <div className="flex-1 grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
-                                                        <div 
-                                                            className="md:col-span-2 cursor-text"
-                                                            onClick={() => startEditTimetable('weekday', index, 'time', entry.time)}
-                                                        >
-                                                            {editingTimetable === `weekday-${index}-time` ? (
-                                                                <input
-                                                                    type="text"
-                                                                    value={editValue}
-                                                                    onChange={(e) => setEditValue(e.target.value)}
-                                                                    onBlur={() => finishEditTimetable('weekday', index, 'time')}
-                                                                    onKeyDown={(e) => handleTimetableKeyPress(e, 'weekday', index, 'time')}
-                                                                    className="w-full px-3 py-2 bg-white/20 border border-blue-400 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                                    autoFocus
-                                                                />
-                                                            ) : (
-                                                                <div className="px-3 py-2">
-                                                                    <span className="text-blue-300 font-bold text-sm">⏰ {entry.time}</span>
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                        <div 
-                                                            className="md:col-span-3 cursor-text"
-                                                            onClick={() => startEditTimetable('weekday', index, 'activity', entry.activity)}
-                                                        >
-                                                            {editingTimetable === `weekday-${index}-activity` ? (
-                                                                <input
-                                                                    type="text"
-                                                                    value={editValue}
-                                                                    onChange={(e) => setEditValue(e.target.value)}
-                                                                    onBlur={() => finishEditTimetable('weekday', index, 'activity')}
-                                                                    onKeyDown={(e) => handleTimetableKeyPress(e, 'weekday', index, 'activity')}
-                                                                    className="w-full px-3 py-2 bg-white/20 border border-blue-400 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                                    autoFocus
-                                                                />
-                                                            ) : (
-                                                                <div className="px-3 py-2">
-                                                                    <span className="text-white font-medium">{entry.activity}</span>
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                    <button
-                                                        onClick={() => deleteTimetableEntry('weekday', index)}
-                                                        className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 hover:bg-red-500/20 p-2 rounded-lg transition-all"
-                                                    >
-                                                        <Trash2 size={18} />
-                                                    </button>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Saturday, Sunday Section */}
-                                <div className="bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 overflow-hidden">
-                                    <div className="bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-4 flex items-center justify-between">
-                                        <h2 className="text-2xl font-bold text-white">Saturday, Sunday</h2>
-                                        <button
-                                            onClick={() => addTimetableEntry('weekend')}
-                                            className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white font-semibold flex items-center gap-2 transition-all"
-                                        >
-                                            <Plus size={18} />
-                                            Add Entry
-                                        </button>
-                                    </div>
-                                    <div className="p-6">
-                                        <div className="space-y-3">
-                                            {timetable.weekend.map((entry, index) => (
-                                                <div key={index} className="flex items-center gap-4 bg-white/5 hover:bg-white/10 p-4 rounded-xl transition-all group">
-                                                    <div className="flex-1 grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
-                                                        <div 
-                                                            className="md:col-span-2 cursor-text"
-                                                            onClick={() => startEditTimetable('weekend', index, 'time', entry.time)}
-                                                        >
-                                                            {editingTimetable === `weekend-${index}-time` ? (
-                                                                <input
-                                                                    type="text"
-                                                                    value={editValue}
-                                                                    onChange={(e) => setEditValue(e.target.value)}
-                                                                    onBlur={() => finishEditTimetable('weekend', index, 'time')}
-                                                                    onKeyDown={(e) => handleTimetableKeyPress(e, 'weekend', index, 'time')}
-                                                                    className="w-full px-3 py-2 bg-white/20 border border-purple-400 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
-                                                                    autoFocus
-                                                                />
-                                                            ) : (
-                                                                <div className="px-3 py-2">
-                                                                    <span className="text-purple-300 font-bold text-sm">⏰ {entry.time}</span>
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                        <div 
-                                                            className="md:col-span-3 cursor-text"
-                                                            onClick={() => startEditTimetable('weekend', index, 'activity', entry.activity)}
-                                                        >
-                                                            {editingTimetable === `weekend-${index}-activity` ? (
-                                                                <input
-                                                                    type="text"
-                                                                    value={editValue}
-                                                                    onChange={(e) => setEditValue(e.target.value)}
-                                                                    onBlur={() => finishEditTimetable('weekend', index, 'activity')}
-                                                                    onKeyDown={(e) => handleTimetableKeyPress(e, 'weekend', index, 'activity')}
-                                                                    className="w-full px-3 py-2 bg-white/20 border border-purple-400 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
-                                                                    autoFocus
-                                                                />
-                                                            ) : (
-                                                                <div className="px-3 py-2">
-                                                                    <span className="text-white font-medium">{entry.activity}</span>
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                    <button
-                                                        onClick={() => deleteTimetableEntry('weekend', index)}
-                                                        className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 hover:bg-red-500/20 p-2 rounded-lg transition-all"
-                                                    >
-                                                        <Trash2 size={18} />
-                                                    </button>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {viewMode === 'table' && (
-                            <div className="bg-white/10 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 overflow-hidden">
-                                <div className="overflow-x-auto">
-                                    <table className="w-full">
-                                        <thead>
-                                            <tr className="bg-gradient-to-r from-purple-600 to-pink-600">
-                                                <th className="px-4 py-4 text-left font-bold text-white border-r border-white/20 w-8"></th>
-                                                <th className="px-4 py-4 text-left font-bold text-white border-r border-white/20 w-8">#</th>
-                                                <th className="px-4 py-4 text-left font-bold text-white border-r border-white/20">Date</th>
-                                                <th className="px-4 py-4 text-left font-bold text-white border-r border-white/20">Day</th>
-                                                <th className="px-4 py-4 text-left font-bold text-white border-r border-white/20">Tasks</th>
-                                                <th className="px-4 py-4 text-center font-bold text-white border-r border-white/20 w-32">All Done</th>
-                                                <th className="px-4 py-4 text-center font-bold text-white w-24">Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {tasks.map((task, index) => (
-                                                <Fragment key={index}>
-                                                    <tr className={`border-b border-white/10 transition-all ${
-                                                        task.allDone ? 'bg-green-500/10' : isPartiallyDone(task) ? 'bg-yellow-500/10' : 'hover:bg-white/5'
-                                                    }`}>
-                                                        <td className="px-4 py-3 border-r border-white/10">
-                                                            <button
-                                                                onClick={() => toggleExpand(index)}
-                                                                className="text-purple-300 hover:text-purple-100 transition-all"
-                                                            >
-                                                                {task.expanded ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
-                                                            </button>
-                                                        </td>
-                                                        <td className="px-4 py-3 text-purple-300 border-r border-white/10 text-sm">
-                                                            {index + 1}
-                                                        </td>
-                                                        <td
-                                                            className="px-4 py-3 border-r border-white/10 cursor-text"
-                                                            onClick={() => startEdit(index, 'date', task.date)}
-                                                        >
-                                                            {editingCell === `${index}-date` ? (
-                                                                <input
-                                                                    type="text"
-                                                                    value={editValue}
-                                                                    onChange={(e) => setEditValue(e.target.value)}
-                                                                    onBlur={() => finishEdit(index, 'date')}
-                                                                    onKeyDown={(e) => handleKeyPress(e, index, 'date')}
-                                                                    className="w-full px-3 py-2 bg-white/20 border border-purple-400 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
-                                                                    autoFocus
-                                                                />
-                                                            ) : (
-                                                                <span className="block px-3 py-2 text-white">{task.date}</span>
-                                                            )}
-                                                        </td>
-                                                        <td
-                                                            className="px-4 py-3 border-r border-white/10 cursor-text"
-                                                            onClick={() => startEdit(index, 'day', task.day)}
-                                                        >
-                                                            {editingCell === `${index}-day` ? (
-                                                                <input
-                                                                    type="text"
-                                                                    value={editValue}
-                                                                    onChange={(e) => setEditValue(e.target.value)}
-                                                                    onBlur={() => finishEdit(index, 'day')}
-                                                                    onKeyDown={(e) => handleKeyPress(e, index, 'day')}
-                                                                    className="w-full px-3 py-2 bg-white/20 border border-purple-400 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
-                                                                    autoFocus
-                                                                />
-                                                            ) : (
-                                                                <span className="block px-3 py-2 text-white">{task.day}</span>
-                                                            )}
-                                                        </td>
-                                                        <td className="px-4 py-3 border-r border-white/10">
-                                                            <div className="flex items-center gap-2">
-                                                                <span className="text-white">
-                                                                    {task.subtasks.length} task{task.subtasks.length !== 1 ? 's' : ''}
-                                                                </span>
-                                                                <button
-                                                                    onClick={() => setShowAddTaskModal(index)}
-                                                                    className="text-green-400 hover:text-green-300 bg-green-500/20 hover:bg-green-500/30 p-1 rounded transition-all"
-                                                                    title="Add task"
-                                                                >
-                                                                    <Plus size={16} />
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                        <td className="px-4 py-3 border-r border-white/10">
-                                                            <div className="flex items-center justify-center gap-2">
-                                                                <input
-                                                                    type="checkbox"
-                                                                    checked={task.allDone}
-                                                                    onChange={() => toggleAllDone(index)}
-                                                                    className="w-5 h-5 cursor-pointer accent-green-500"
-                                                                />
-                                                                {task.allDone && <span className="text-green-400 font-semibold">✓</span>}
-                                                                {isPartiallyDone(task) && !task.allDone && (
-                                                                    <span className="text-yellow-400 font-semibold">◐</span>
-                                                                )}
-                                                            </div>
-                                                        </td>
-                                                        <td className="px-4 py-3 text-center">
-                                                            <button
-                                                                onClick={() => deleteRow(index)}
-                                                                className="text-red-400 hover:text-red-300 hover:bg-red-500/20 p-2 rounded-lg transition-all"
-                                                                title="Delete row"
-                                                            >
-                                                                <Trash2 size={18} />
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                    
-                                                    {task.expanded && (
-                                                        <tr className="bg-white/5">
-                                                            <td colSpan="7" className="px-4 py-4">
-                                                                <div className="ml-12 space-y-2">
-                                                                    {task.subtasks.map((subtask, subIndex) => (
-                                                                        <div key={subIndex} className="flex items-center gap-4 bg-white/10 p-3 rounded-lg">
-                                                                            <input
-                                                                                type="checkbox"
-                                                                                checked={subtask.done}
-                                                                                onChange={() => toggleSubtask(index, subIndex)}
-                                                                                className="w-4 h-4 cursor-pointer accent-green-500"
-                                                                            />
-                                                                            <div className="flex-1 grid grid-cols-2 gap-4">
-                                                                                <div className="text-purple-200 text-sm font-semibold">{subtask.time}</div>
-                                                                                <div className={`text-white text-sm ${subtask.done ? 'line-through text-green-300' : ''}`}>
-                                                                                    {subtask.name}
-                                                                                </div>
-                                                                            </div>
-                                                                            <button
-                                                                                onClick={() => deleteSubtask(index, subIndex)}
-                                                                                className="text-red-400 hover:text-red-300 p-1 rounded transition-all"
-                                                                            >
-                                                                                <Trash2 size={16} />
-                                                                            </button>
-                                                                        </div>
-                                                                    ))}
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    )}
-                                                </Fragment>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        )}
-
-                        {showAddTaskModal !== null && (
-                            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-                                <div className="bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl p-8 shadow-2xl max-w-md w-full mx-4">
-                                    <div className="flex justify-between items-center mb-6">
-                                        <h3 className="text-2xl font-bold text-white">Add New Task</h3>
-                                        <button
-                                            onClick={() => {
-                                                setShowAddTaskModal(null);
-                                                setNewSubtask({ time: '', name: '' });
+                                            onClick={() => addSubtask(taskIdx)}
+                                            style={{
+                                                padding: '8px 12px',
+                                                border: '1px dashed var(--border-color)',
+                                                background: 'transparent',
+                                                cursor: 'pointer',
+                                                borderRadius: '6px',
+                                                fontSize: '14px',
+                                                color: 'var(--accent-primary)',
+                                                fontWeight: '500',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '6px',
+                                                width: 'fit-content'
                                             }}
-                                            className="text-white hover:bg-white/20 p-2 rounded-lg transition-all"
+                                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-tertiary)'}
+                                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                                         >
-                                            <X size={24} />
-                                        </button>
-                                    </div>
-                                    <div className="space-y-4">
-                                        <div>
-                                            <label className="block text-white text-sm font-semibold mb-2">Time Slot</label>
-                                            <input
-                                                type="text"
-                                                placeholder="e.g., 9am-1pm"
-                                                value={newSubtask.time}
-                                                onChange={(e) => setNewSubtask({ ...newSubtask, time: e.target.value })}
-                                                className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-white text-sm font-semibold mb-2">Task Name</label>
-                                            <input
-                                                type="text"
-                                                placeholder="e.g., Class, Revision"
-                                                value={newSubtask.name}
-                                                onChange={(e) => setNewSubtask({ ...newSubtask, name: e.target.value })}
-                                                className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50"
-                                            />
-                                        </div>
-                                        <button
-                                            onClick={() => addSubtask(showAddTaskModal)}
-                                            className="w-full px-6 py-3 bg-white text-purple-600 font-bold rounded-lg hover:bg-purple-50 transition-all shadow-lg"
-                                        >
+                                            <Plus size={16} />
                                             Add Task
                                         </button>
                                     </div>
-                                </div>
-                            </div>
-                        )}
+                                </td>
+                                <td className="table-cell" style={{ textAlign: 'center' }}>
+                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                                        <div style={{
+                                            padding: '6px 12px',
+                                            borderRadius: '6px',
+                                            backgroundColor: perfLevel.bg,
+                                            color: perfLevel.color,
+                                            fontSize: '16px',
+                                            fontWeight: '700',
+                                            border: `2px solid ${perfLevel.color}`,
+                                            minWidth: '60px'
+                                        }}>
+                                            {taskRate}%
+                                        </div>
+                                        <div style={{ fontSize: '20px' }}>
+                                            {perfLevel.emoji}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td className="table-cell" style={{ textAlign: 'center' }}>
+                                    <button
+                                        onClick={() => deleteTask(taskIdx)}
+                                        style={{
+                                            padding: '8px',
+                                            border: 'none',
+                                            background: 'transparent',
+                                            cursor: 'pointer',
+                                            color: 'var(--danger)',
+                                            borderRadius: '6px'
+                                        }}
+                                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-tertiary)'}
+                                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                                    >
+                                        <Trash2 size={18} />
+                                    </button>
+                                </td>
+                            </tr>
+                        );
+                    })}
+                </tbody>
+            </table>
+        </div>
+    </div>
+)}
+
+                        {/* Timetable View */}
+                        {viewMode === 'timetable' && (
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+        {/* Weekday Timetable */}
+        <div className="theme-bg-secondary timetable-container" 
+             style={{ borderRadius: '12px', border: '1px solid var(--border-color)', overflow: 'hidden' }}>
+            <div style={{ 
+                padding: '20px 24px', 
+                borderBottom: '2px solid var(--border-color)', 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center',
+                backgroundColor: 'var(--bg-secondary)'
+            }}>
+                <h3 className="theme-text-primary" style={{ margin: 0, fontSize: '22px', fontWeight: '700', letterSpacing: '-0.02em' }}>
+                    Monday - Friday
+                </h3>
+                <button
+                    onClick={() => addTimetableEntry('weekday')}
+                    style={{
+                        padding: '10px 18px',
+                        border: 'none',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontSize: '15px',
+                        fontWeight: '600',
+                        backgroundColor: 'var(--accent-primary)',
+                        color: '#ffffff',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        transition: 'transform 0.2s'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                    onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                >
+                    <Plus size={18} />
+                    Add Slot
+                </button>
+            </div>
+            <div className="timetable-grid">
+                {timetable.weekday.map((entry, idx) => (
+                    <React.Fragment key={idx}>
+                        <div className="timetable-time-cell theme-text-primary">
+                            <input
+                                type="text"
+                                value={entry.time}
+                                onChange={(e) => updateTimetable('weekday', idx, 'time', e.target.value)}
+                                placeholder="00:00"
+                                className="theme-text-primary"
+                                style={{
+                                    width: '100%',
+                                    textAlign: 'center',
+                                    background: 'transparent',
+                                    border: 'none',
+                                    outline: 'none',
+                                    fontSize: '18px',
+                                    fontWeight: '600',
+                                    fontFamily: 'Inter, sans-serif'
+                                }}
+                            />
+                        </div>
+                        <div className="timetable-activity-cell">
+                            <input
+                                type="text"
+                                value={entry.activity}
+                                onChange={(e) => updateTimetable('weekday', idx, 'activity', e.target.value)}
+                                placeholder="Enter activity..."
+                                className="timetable-activity-input theme-text-primary"
+                            />
+                            <button
+                                onClick={() => deleteTimetableEntry('weekday', idx)}
+                                className="timetable-delete-btn"
+                                style={{
+                                    padding: '8px',
+                                    border: 'none',
+                                    background: 'var(--danger)',
+                                    cursor: 'pointer',
+                                    color: '#ffffff',
+                                    borderRadius: '6px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    transition: 'all 0.2s'
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.transform = 'scale(1.1)';
+                                    e.currentTarget.style.backgroundColor = '#dc2626';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.transform = 'scale(1)';
+                                    e.currentTarget.style.backgroundColor = 'var(--danger)';
+                                }}
+                            >
+                                <Trash2 size={16} />
+                            </button>
+                        </div>
+                    </React.Fragment>
+                ))}
+            </div>
+        </div>
+
+        {/* Weekend Timetable */}
+        <div className="theme-bg-secondary timetable-container" 
+             style={{ borderRadius: '12px', border: '1px solid var(--border-color)', overflow: 'hidden' }}>
+            <div style={{ 
+                padding: '20px 24px', 
+                borderBottom: '2px solid var(--border-color)', 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center',
+                backgroundColor: 'var(--bg-secondary)'
+            }}>
+                <h3 className="theme-text-primary" style={{ margin: 0, fontSize: '22px', fontWeight: '700', letterSpacing: '-0.02em' }}>
+                    Saturday - Sunday
+                </h3>
+                <button
+                    onClick={() => addTimetableEntry('weekend')}
+                    style={{
+                        padding: '10px 18px',
+                        border: 'none',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontSize: '15px',
+                        fontWeight: '600',
+                        backgroundColor: 'var(--accent-primary)',
+                        color: '#ffffff',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        transition: 'transform 0.2s'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                    onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                >
+                    <Plus size={18} />
+                    Add Slot
+                </button>
+            </div>
+            <div className="timetable-grid">
+                {timetable.weekend.map((entry, idx) => (
+                    <React.Fragment key={idx}>
+                        <div className="timetable-time-cell theme-text-primary">
+                            <input
+                                type="text"
+                                value={entry.time}
+                                onChange={(e) => updateTimetable('weekend', idx, 'time', e.target.value)}
+                                placeholder="00:00"
+                                className="theme-text-primary"
+                                style={{
+                                    width: '100%',
+                                    textAlign: 'center',
+                                    background: 'transparent',
+                                    border: 'none',
+                                    outline: 'none',
+                                    fontSize: '18px',
+                                    fontWeight: '600',
+                                    fontFamily: 'Inter, sans-serif'
+                                }}
+                            />
+                        </div>
+                        <div className="timetable-activity-cell">
+                            <input
+                                type="text"
+                                value={entry.activity}
+                                onChange={(e) => updateTimetable('weekend', idx, 'activity', e.target.value)}
+                                placeholder="Enter activity..."
+                                className="timetable-activity-input theme-text-primary"
+                            />
+                            <button
+                                onClick={() => deleteTimetableEntry('weekend', idx)}
+                                className="timetable-delete-btn"
+                                style={{
+                                    padding: '8px',
+                                    border: 'none',
+                                    background: 'var(--danger)',
+                                    cursor: 'pointer',
+                                    color: '#ffffff',
+                                    borderRadius: '6px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    transition: 'all 0.2s'
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.transform = 'scale(1.1)';
+                                    e.currentTarget.style.backgroundColor = '#dc2626';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.transform = 'scale(1)';
+                                    e.currentTarget.style.backgroundColor = 'var(--danger)';
+                                }}
+                            >
+                                <Trash2 size={16} />
+                            </button>
+                        </div>
+                    </React.Fragment>
+                ))}
+            </div>
+        </div>
+    </div>
+)}
                     </div>
                 </div>
             );
         };
 
-        ReactDOM.render(<TaskTrackerDashboard />, document.getElementById('root'));
+        ReactDOM.render(<ActivityTracker />, document.getElementById('root'));
     </script>
 </body>
 </html>
