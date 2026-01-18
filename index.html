@@ -618,14 +618,20 @@
         );
 
         const ActivityTracker = () => {
-            const [isDark, setIsDark] = useState(false);
+            // Helper to get saved state from localStorage
+            const getSavedState = (key, initialValue) => {
+                const saved = localStorage.getItem(key);
+                return saved ? JSON.parse(saved) : initialValue;
+            };
+
+            const [isDark, setIsDark] = useState(() => getSavedState('daily-tracker-isDark', false));
             const [viewMode, setViewMode] = useState('dashboard');
             const completionChartRef = useRef(null);
             const timeChartRef = useRef(null);
             const completionChartInstance = useRef(null);
             const timeChartInstance = useRef(null);
 
-            const [tasks, setTasks] = useState([
+            const [tasks, setTasks] = useState(() => getSavedState('daily-tracker-tasks', [
                 { 
                     date: '18 January', 
                     day: 'Sunday', 
@@ -649,10 +655,9 @@
                         { time: '8pm-10:30pm', name: 'Different Class', done: false }
                     ]
                 }
-            ]);
-            
+            ]));
 
-            const [timetable, setTimetable] = useState({
+            const [timetable, setTimetable] = useState(() => getSavedState('daily-tracker-timetable', {
                 weekday: [
                     { time: '8-11', activity: 'Last day class' },
                     { time: '11-12', activity: 'Breakfast + travel' },
@@ -670,7 +675,21 @@
                     { time: '4-6', activity: 'LinkedIn, resume' },
                     { time: '7-10', activity: 'Revision' }
                 ]
-            });
+            }));
+
+            // Sync with LocalStorage
+            useEffect(() => {
+                localStorage.setItem('daily-tracker-tasks', JSON.stringify(tasks));
+            }, [tasks]);
+
+            useEffect(() => {
+                localStorage.setItem('daily-tracker-timetable', JSON.stringify(timetable));
+            }, [timetable]);
+
+            useEffect(() => {
+                localStorage.setItem('daily-tracker-isDark', JSON.stringify(isDark));
+                document.body.className = isDark ? 'dark-theme' : 'light-theme';
+            }, [isDark]);
 
             const [editingCell, setEditingCell] = useState(null);
             const [editValue, setEditValue] = useState('');
@@ -681,21 +700,6 @@
             const completionRate = totalSubtasks > 0 ? ((completedSubtasks / totalSubtasks) * 100).toFixed(1) : 0;
             const avgTasksPerDay = tasks.length > 0 ? (totalSubtasks / tasks.length).toFixed(1) : 0;
             const productivityScore = tasks.length > 0 ? (completedSubtasks / tasks.length).toFixed(1) : 0;
-            useEffect(() => { localStorage.setItem('daily-tracker-tasks', JSON.stringify(tasks)); }, [tasks]);
-            useEffect(() => { localStorage.setItem('daily-tracker-timetable', JSON.stringify(timetable)); }, [timetable]);
-            useEffect(() => { localStorage.setItem('daily-tracker-theme', isDark ? 'dark' : 'light'); }, [isDark]);
-            useEffect(() => {
-    document.body.className = isDark ? 'dark-theme' : 'light-theme';
-    
-    // Load saved data on first load
-    const savedTasks = localStorage.getItem('daily-tracker-tasks');
-    const savedTimetable = localStorage.getItem('daily-tracker-timetable');
-    const savedTheme = localStorage.getItem('daily-tracker-theme');
-    
-    if (savedTasks) setTasks(JSON.parse(savedTasks));
-    if (savedTimetable) setTimetable(JSON.parse(savedTimetable));
-    if (savedTheme) setIsDark(savedTheme === 'dark');
-}, []);
 
             useEffect(() => {
                 if (viewMode === 'dashboard') {
@@ -708,99 +712,99 @@
             }, [viewMode, tasks, isDark]);
 
             const updateCharts = () => {
-    const style = getComputedStyle(document.body);
-    const textColor = style.getPropertyValue('--text-primary').trim();
-    const borderColor = style.getPropertyValue('--border-color').trim();
-    const chart1 = style.getPropertyValue('--chart-1').trim();
-    const chart2 = style.getPropertyValue('--chart-2').trim();
-    const successColor = style.getPropertyValue('--success').trim();
-    const warningColor = style.getPropertyValue('--warning').trim();
-    
-    if (completionChartRef.current) {
-        if (completionChartInstance.current) completionChartInstance.current.destroy();
-        const ctx = completionChartRef.current.getContext('2d');
-        completionChartInstance.current = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Completed', 'Pending'],
-                datasets: [{
-                    data: [completedSubtasks, totalSubtasks - completedSubtasks],
-                    backgroundColor: [successColor, warningColor],
-                    borderWidth: 0,
-                    hoverOffset: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: { 
-                            color: textColor, 
-                            padding: 20, 
-                            font: { size: 14, weight: '600', family: 'Inter' },
-                            usePointStyle: true,
-                            pointStyle: 'circle'
+                const style = getComputedStyle(document.body);
+                const textColor = style.getPropertyValue('--text-primary').trim();
+                const borderColor = style.getPropertyValue('--border-color').trim();
+                const chart1 = style.getPropertyValue('--chart-1').trim();
+                const chart2 = style.getPropertyValue('--chart-2').trim();
+                const successColor = style.getPropertyValue('--success').trim();
+                const warningColor = style.getPropertyValue('--warning').trim();
+                
+                if (completionChartRef.current) {
+                    if (completionChartInstance.current) completionChartInstance.current.destroy();
+                    const ctx = completionChartRef.current.getContext('2d');
+                    completionChartInstance.current = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Completed', 'Pending'],
+                            datasets: [{
+                                data: [completedSubtasks, totalSubtasks - completedSubtasks],
+                                backgroundColor: [successColor, warningColor],
+                                borderWidth: 0,
+                                hoverOffset: 8
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: { 
+                                        color: textColor, 
+                                        padding: 20, 
+                                        font: { size: 14, weight: '600', family: 'Inter' },
+                                        usePointStyle: true,
+                                        pointStyle: 'circle'
+                                    }
+                                }
+                            },
+                            cutout: '70%'
                         }
-                    }
-                },
-                cutout: '70%'
-            }
-        });
-    }
-
-    if (timeChartRef.current) {
-        if (timeChartInstance.current) timeChartInstance.current.destroy();
-        const tasksByDay = tasks.map(task => ({ day: task.day || 'Unknown', count: task.subtasks.length }));
-        const ctx = timeChartRef.current.getContext('2d');
-        timeChartInstance.current = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: tasksByDay.map(t => t.day),
-                datasets: [{
-                    label: 'Tasks per Day',
-                    data: tasksByDay.map(t => t.count),
-                    backgroundColor: chart1,
-                    borderRadius: 8,
-                    barThickness: 50,
-                    hoverBackgroundColor: chart2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { 
-                    legend: { display: false },
-                    tooltip: {
-                        backgroundColor: style.getPropertyValue('--bg-card').trim(),
-                        titleColor: textColor,
-                        bodyColor: textColor,
-                        borderColor: borderColor,
-                        borderWidth: 1,
-                        padding: 12,
-                        displayColors: false,
-                        titleFont: { size: 14, weight: '600', family: 'Inter' },
-                        bodyFont: { size: 13, family: 'Inter' }
-                    }
-                },
-                scales: {
-                    y: { 
-                        beginAtZero: true, 
-                        ticks: { color: textColor, stepSize: 1, font: { size: 13, family: 'Inter' } }, 
-                        grid: { color: borderColor, lineWidth: 1 },
-                        border: { display: false }
-                    },
-                    x: { 
-                        ticks: { color: textColor, font: { size: 13, weight: '600', family: 'Inter' } }, 
-                        grid: { display: false },
-                        border: { display: false }
-                    }
+                    });
                 }
-            }
-        });
-    }
-};
+
+                if (timeChartRef.current) {
+                    if (timeChartInstance.current) timeChartInstance.current.destroy();
+                    const tasksByDay = tasks.map(task => ({ day: task.day || 'Unknown', count: task.subtasks.length }));
+                    const ctx = timeChartRef.current.getContext('2d');
+                    timeChartInstance.current = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: tasksByDay.map(t => t.day),
+                            datasets: [{
+                                label: 'Tasks per Day',
+                                data: tasksByDay.map(t => t.count),
+                                backgroundColor: chart1,
+                                borderRadius: 8,
+                                barThickness: 50,
+                                hoverBackgroundColor: chart2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { 
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: style.getPropertyValue('--bg-card').trim(),
+                                    titleColor: textColor,
+                                    bodyColor: textColor,
+                                    borderColor: borderColor,
+                                    borderWidth: 1,
+                                    padding: 12,
+                                    displayColors: false,
+                                    titleFont: { size: 14, weight: '600', family: 'Inter' },
+                                    bodyFont: { size: 13, family: 'Inter' }
+                                }
+                            },
+                            scales: {
+                                y: { 
+                                    beginAtZero: true, 
+                                    ticks: { color: textColor, stepSize: 1, font: { size: 13, family: 'Inter' } }, 
+                                    grid: { color: borderColor, lineWidth: 1 },
+                                    border: { display: false }
+                                },
+                                x: { 
+                                    ticks: { color: textColor, font: { size: 13, weight: '600', family: 'Inter' } }, 
+                                    grid: { display: false },
+                                    border: { display: false }
+                                }
+                            }
+                        }
+                    });
+                }
+            };
 
             const ProgressRing = ({ progress, size = 120, strokeWidth = 10 }) => {
                 const radius = (size - strokeWidth) / 2;
@@ -896,185 +900,156 @@
                     setEditValue('');
                 }
             };
-            // Add these functions before the return statement in ActivityTracker component
-
-// Confetti effect
-const triggerConfetti = () => {
-    const colors = ['var(--accent-primary)', 'var(--accent-secondary)', 'var(--success)', 'var(--warning)', '#ec4899'];
-    for (let i = 0; i < 50; i++) {
-        setTimeout(() => {
-            const confetti = document.createElement('div');
-            confetti.className = 'confetti';
-            confetti.style.left = Math.random() * 100 + 'vw';
-            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            confetti.style.animationDelay = Math.random() * 0.5 + 's';
-            confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
-            document.body.appendChild(confetti);
-            setTimeout(() => confetti.remove(), 3000);
-        }, i * 30);
-    }
-};
-
-// Get today's date in same format as tasks
-const getTodayString = () => {
-    const today = new Date();
-    const day = today.getDate();
-    const month = today.toLocaleString('en-US', { month: 'long' });
-    return `${day} ${month}`;
-};
-
-// Get today's day name
-const getTodayDayName = () => {
-    return new Date().toLocaleString('en-US', { weekday: 'long' });
-};
-
-// Find today's task
-const getTodayTask = () => {
-    const todayDate = getTodayString();
-    const todayDay = getTodayDayName();
-    
-    // Try to find by exact date match first
-    let todayTask = tasks.find(task => task.date === todayDate);
-    
-    // If not found, try to find by day name
-    if (!todayTask) {
-        todayTask = tasks.find(task => task.day === todayDay);
-    }
-    
-    return todayTask;
-};
-
-// Calculate today's stats
-const getTodayStats = () => {
-    const todayTask = getTodayTask();
-    
-    if (!todayTask) {
-        return { total: 0, completed: 0, rate: 0, exists: false };
-    }
-    
-    const total = todayTask.subtasks.length;
-    const completed = todayTask.subtasks.filter(st => st.done).length;
-    const rate = total > 0 ? ((completed / total) * 100).toFixed(0) : 0;
-    
-    return { total, completed, rate: parseFloat(rate), exists: true };
-};
-
-// Check for task completion and trigger celebration
-const checkTaskCompletion = (taskIndex, subtaskIndex) => {
-    toggleSubtask(taskIndex, subtaskIndex);
-    
-    // Check if this is today's task and if completion makes it 100% done
-    setTimeout(() => {
-        const task = tasks[taskIndex];
-        const todayTask = getTodayTask();
-        
-        // Only celebrate if this is today's task
-        if (todayTask && task === todayTask) {
-            const completed = task.subtasks.filter(st => st.done).length;
-            const total = task.subtasks.length;
             
-            if (completed === total && total > 0) {
-                triggerConfetti();
-            }
-        }
-    }, 100);
-};
+            // Celebration & Performance Logic
+            const triggerConfetti = () => {
+                const colors = ['var(--accent-primary)', 'var(--accent-secondary)', 'var(--success)', 'var(--warning)', '#ec4899'];
+                for (let i = 0; i < 50; i++) {
+                    setTimeout(() => {
+                        const confetti = document.createElement('div');
+                        confetti.className = 'confetti';
+                        confetti.style.left = Math.random() * 100 + 'vw';
+                        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                        confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                        confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                        document.body.appendChild(confetti);
+                        setTimeout(() => confetti.remove(), 3000);
+                    }, i * 30);
+                }
+            };
 
-// Get performance level
-const getPerformanceLevel = (rate) => {
-    if (rate >= 90) return { level: 'Exceptional', emoji: '🌟', color: 'var(--success)', bg: 'var(--success-light)' };
-    if (rate >= 75) return { level: 'Excellent', emoji: '🎯', color: 'var(--info)', bg: 'var(--info-light)' };
-    if (rate >= 60) return { level: 'Good', emoji: '👍', color: 'var(--accent-primary)', bg: 'var(--accent-primary-light)' };
-    if (rate >= 40) return { level: 'Fair', emoji: '📈', color: 'var(--warning)', bg: 'var(--warning-light)' };
-    return { level: 'Needs Focus', emoji: '💪', color: 'var(--danger)', bg: 'var(--danger-light)' };
-};
+            const getTodayString = () => {
+                const today = new Date();
+                const day = today.getDate();
+                const month = today.toLocaleString('en-US', { month: 'long' });
+                return `${day} ${month}`;
+            };
 
-// Get motivational message based on TODAY's performance
-const getTodayMotivation = (rate, completed, total) => {
-    if (rate >= 100) return {
-        title: "Perfect Day! 🎉",
-        message: "You've completed all your tasks for today! Amazing work!",
-        tip: "Tomorrow, try adding one more challenging task to keep growing."
-    };
-    if (rate >= 75) return {
-        title: "Great Progress Today! ⭐",
-        message: `${completed} out of ${total} tasks done. You're having a productive day!`,
-        tip: "You're almost there! Finish the remaining tasks to make it a perfect day."
-    };
-    if (rate >= 50) return {
-        title: "Keep Going! 💪",
-        message: `${completed} tasks completed. You're halfway through today's goals!`,
-        tip: "Take a short break, then tackle the next task with fresh energy."
-    };
-    if (rate >= 25) return {
-        title: "Good Start! 🌱",
-        message: `${completed} tasks done. Every small step counts!`,
-        tip: "Focus on completing just one more task right now. You've got this!"
-    };
-    if (completed > 0) return {
-        title: "You've Started! 👏",
-        message: `${completed} task completed today. Momentum is building!`,
-        tip: "The hardest part is starting - and you've already done that. Keep going!"
-    };
-    return {
-        title: "Ready to Begin? 🚀",
-        message: "Your tasks for today are waiting. Let's make it count!",
-        tip: "Start with the easiest task to build momentum, or tackle the hardest one first."
-    };
-};
+            const getTodayDayName = () => {
+                return new Date().toLocaleString('en-US', { weekday: 'long' });
+            };
 
-// Get TODAY's productivity tips
-const getTodayProductivityTips = (stats) => {
-    const tips = [];
-    const currentHour = new Date().getHours();
-    
-    if (!stats.exists) {
-        tips.push({ icon: '📅', text: 'No tasks set for today yet. Add your daily goals to get started!' });
-        return tips;
-    }
-    
-    if (stats.rate === 100) {
-        tips.push({ icon: '🏆', text: 'Perfect day! All tasks completed. Time to relax or add bonus tasks!' });
-    } else if (stats.completed === 0 && stats.total > 0) {
-        if (currentHour < 12) {
-            tips.push({ icon: '🌅', text: 'Morning energy is high! Start with your most important task.' });
-        } else if (currentHour < 17) {
-            tips.push({ icon: '☀️', text: 'Afternoon focus time! Block distractions and dive into your tasks.' });
-        } else {
-            tips.push({ icon: '🌙', text: 'Evening hours! Pick an easy task to get started and build momentum.' });
-        }
-    } else if (stats.completed > 0 && stats.completed < stats.total) {
-        const remaining = stats.total - stats.completed;
-        tips.push({ icon: '⚡', text: `${remaining} task${remaining > 1 ? 's' : ''} remaining today. You're making progress!` });
-    }
-    
-    if (stats.total > 5) {
-        tips.push({ icon: '🎯', text: 'Busy day ahead! Prioritize your top 3 most important tasks.' });
-    }
-    
-    if (stats.rate >= 50 && stats.rate < 100) {
-        tips.push({ icon: '🔥', text: 'You\'re on fire! Finish strong and complete all tasks today.' });
-    }
-    
-    return tips;
-};
+            const getTodayTask = () => {
+                const todayDate = getTodayString();
+                const todayDay = getTodayDayName();
+                let todayTask = tasks.find(task => task.date === todayDate);
+                if (!todayTask) {
+                    todayTask = tasks.find(task => task.day === todayDay);
+                }
+                return todayTask;
+            };
 
-// Calculate streak of perfect days
-const calculateStreak = () => {
-    let streak = 0;
-    // Start from most recent day and go backwards
-    for (let i = tasks.length - 1; i >= 0; i--) {
-        const task = tasks[i];
-        const completed = task.subtasks.filter(st => st.done).length;
-        const total = task.subtasks.length;
-        if (total > 0 && completed === total) {
-            streak++;
-        } else if (total > 0) {
-            break;
-        }
-    }
-    return streak;
-};
+            const getTodayStats = () => {
+                const todayTask = getTodayTask();
+                if (!todayTask) {
+                    return { total: 0, completed: 0, rate: 0, exists: false };
+                }
+                const total = todayTask.subtasks.length;
+                const completed = todayTask.subtasks.filter(st => st.done).length;
+                const rate = total > 0 ? ((completed / total) * 100).toFixed(0) : 0;
+                return { total, completed, rate: parseFloat(rate), exists: true };
+            };
+
+            const checkTaskCompletion = (taskIndex, subtaskIndex) => {
+                toggleSubtask(taskIndex, subtaskIndex);
+                setTimeout(() => {
+                    const task = tasks[taskIndex];
+                    const todayTask = getTodayTask();
+                    if (todayTask && task === todayTask) {
+                        const completed = task.subtasks.filter(st => st.done).length;
+                        const total = task.subtasks.length;
+                        if (completed === total && total > 0) {
+                            triggerConfetti();
+                        }
+                    }
+                }, 100);
+            };
+
+            const getPerformanceLevel = (rate) => {
+                if (rate >= 90) return { level: 'Exceptional', emoji: '🌟', color: 'var(--success)', bg: 'var(--success-light)' };
+                if (rate >= 75) return { level: 'Excellent', emoji: '🎯', color: 'var(--info)', bg: 'var(--info-light)' };
+                if (rate >= 60) return { level: 'Good', emoji: '👍', color: 'var(--accent-primary)', bg: 'var(--accent-primary-light)' };
+                if (rate >= 40) return { level: 'Fair', emoji: '📈', color: 'var(--warning)', bg: 'var(--warning-light)' };
+                return { level: 'Needs Focus', emoji: '💪', color: 'var(--danger)', bg: 'var(--danger-light)' };
+            };
+
+            const getTodayMotivation = (rate, completed, total) => {
+                if (rate >= 100) return {
+                    title: "Perfect Day! 🎉",
+                    message: "You've completed all your tasks for today! Amazing work!",
+                    tip: "Tomorrow, try adding one more challenging task to keep growing."
+                };
+                if (rate >= 75) return {
+                    title: "Great Progress Today! ⭐",
+                    message: `${completed} out of ${total} tasks done. You're having a productive day!`,
+                    tip: "You're almost there! Finish the remaining tasks to make it a perfect day."
+                };
+                if (rate >= 50) return {
+                    title: "Keep Going! 💪",
+                    message: `${completed} tasks completed. You're halfway through today's goals!`,
+                    tip: "Take a short break, then tackle the next task with fresh energy."
+                };
+                if (rate >= 25) return {
+                    title: "Good Start! 🌱",
+                    message: `${completed} tasks done. Every small step counts!`,
+                    tip: "Focus on completing just one more task right now. You've got this!"
+                };
+                if (completed > 0) return {
+                    title: "You've Started! 👏",
+                    message: `${completed} task completed today. Momentum is building!`,
+                    tip: "The hardest part is starting - and you've already done that. Keep going!"
+                };
+                return {
+                    title: "Ready to Begin? 🚀",
+                    message: "Your tasks for today are waiting. Let's make it count!",
+                    tip: "Start with the easiest task to build momentum, or tackle the hardest one first."
+                };
+            };
+
+            const getTodayProductivityTips = (stats) => {
+                const tips = [];
+                const currentHour = new Date().getHours();
+                if (!stats.exists) {
+                    tips.push({ icon: '📅', text: 'No tasks set for today yet. Add your daily goals to get started!' });
+                    return tips;
+                }
+                if (stats.rate === 100) {
+                    tips.push({ icon: '🏆', text: 'Perfect day! All tasks completed. Time to relax or add bonus tasks!' });
+                } else if (stats.completed === 0 && stats.total > 0) {
+                    if (currentHour < 12) {
+                        tips.push({ icon: '🌅', text: 'Morning energy is high! Start with your most important task.' });
+                    } else if (currentHour < 17) {
+                        tips.push({ icon: '☀️', text: 'Afternoon focus time! Block distractions and dive into your tasks.' });
+                    } else {
+                        tips.push({ icon: '🌙', text: 'Evening hours! Pick an easy task to get started and build momentum.' });
+                    }
+                } else if (stats.completed > 0 && stats.completed < stats.total) {
+                    const remaining = stats.total - stats.completed;
+                    tips.push({ icon: '⚡', text: `${remaining} task${remaining > 1 ? 's' : ''} remaining today. You're making progress!` });
+                }
+                if (stats.total > 5) {
+                    tips.push({ icon: '🎯', text: 'Busy day ahead! Prioritize your top 3 most important tasks.' });
+                }
+                if (stats.rate >= 50 && stats.rate < 100) {
+                    tips.push({ icon: '🔥', text: 'You\'re on fire! Finish strong and complete all tasks today.' });
+                }
+                return tips;
+            };
+
+            const calculateStreak = () => {
+                let streak = 0;
+                for (let i = tasks.length - 1; i >= 0; i--) {
+                    const task = tasks[i];
+                    const completed = task.subtasks.filter(st => st.done).length;
+                    const total = task.subtasks.length;
+                    if (total > 0 && completed === total) {
+                        streak++;
+                    } else if (total > 0) {
+                        break;
+                    }
+                }
+                return streak;
+            };
 
             return (
                 <div className="theme-bg-primary min-h-screen" style={{ padding: '20px 24px' }}>
