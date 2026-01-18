@@ -677,6 +677,19 @@
                 ]
             }));
 
+            // Auto-refresh to update task status when date changes
+useEffect(() => {
+    const checkDateChange = setInterval(() => {
+        const now = new Date();
+        // Check if it's midnight (new day)
+        if (now.getHours() === 0 && now.getMinutes() === 0) {
+            // Force re-render by updating a dummy state
+            setTasks(tasks => [...tasks]);
+        }
+    }, 60000); // Check every minute
+
+    return () => clearInterval(checkDateChange);
+}, []);
             // Sync with LocalStorage
             useEffect(() => {
                 localStorage.setItem('daily-tracker-tasks', JSON.stringify(tasks));
@@ -929,26 +942,35 @@
                 return new Date().toLocaleString('en-US', { weekday: 'long' });
             };
 
-            const getTodayTask = () => {
-                const todayDate = getTodayString();
-                const todayDay = getTodayDayName();
-                let todayTask = tasks.find(task => task.date === todayDate);
-                if (!todayTask) {
-                    todayTask = tasks.find(task => task.day === todayDay);
-                }
-                return todayTask;
-            };
+            const parseTaskDate = (dateStr) => {
+    // Parse "18 January" format and assume current year
+    const currentYear = new Date().getFullYear();
+    const parts = dateStr.trim().split(' ');
+    if (parts.length === 2) {
+        const day = parseInt(parts[0]);
+        const month = parts[1];
+        const monthIndex = new Date(`${month} 1, ${currentYear}`).getMonth();
+        return new Date(currentYear, monthIndex, day);
+    }
+    return null;
+};
 
-            const getTodayStats = () => {
-                const todayTask = getTodayTask();
-                if (!todayTask) {
-                    return { total: 0, completed: 0, rate: 0, exists: false };
-                }
-                const total = todayTask.subtasks.length;
-                const completed = todayTask.subtasks.filter(st => st.done).length;
-                const rate = total > 0 ? ((completed / total) * 100).toFixed(0) : 0;
-                return { total, completed, rate: parseFloat(rate), exists: true };
-            };
+            const getTaskStatus = (task) => {
+    const taskDate = parseTaskDate(task.date);
+    if (!taskDate || isNaN(taskDate)) return 'unknown';
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    taskDate.setHours(0, 0, 0, 0);
+    
+    if (taskDate < today) return 'past';
+    if (taskDate.getTime() === today.getTime()) return 'today';
+    return 'future';
+};
+
+const getTodayTask = () => {
+    return tasks.find(task => getTaskStatus(task) === 'today');
+};
 
             const checkTaskCompletion = (taskIndex, subtaskIndex) => {
                 toggleSubtask(taskIndex, subtaskIndex);
@@ -1049,6 +1071,20 @@
                     }
                 }
                 return streak;
+            };
+
+            // FIX: Defined the missing helper function
+            const getTodayStats = () => {
+                const todayTask = getTodayTask();
+                if (!todayTask) return { exists: false, completed: 0, total: 0, rate: 0 };
+                const completed = todayTask.subtasks.filter(st => st.done).length;
+                const total = todayTask.subtasks.length;
+                return {
+                    exists: true,
+                    completed,
+                    total,
+                    rate: total > 0 ? Math.round((completed / total) * 100) : 0
+                };
             };
 
             return (
@@ -1469,14 +1505,17 @@
                         const isToday = todayTask === task;
                         
                         return (
-                            <tr key={taskIdx} style={{ 
-                                backgroundColor: isToday ? 'var(--accent-primary-light)' : 'transparent',
-                                borderLeft: isToday ? '4px solid var(--accent-primary)' : 'none'
-                            }}>
-                                <td className="table-cell theme-text-secondary" style={{ textAlign: 'center', fontWeight: '600' }}>
-                                    {isToday && <span style={{ marginRight: '4px' }}>📍</span>}
-                                    {taskIdx + 1}
-                                </td>
+    <tr key={taskIdx} style={{ 
+        backgroundColor: isToday ? 'var(--accent-primary-light)' : 'transparent',
+        borderLeft: isToday ? '4px solid var(--accent-primary)' : 'none',
+        opacity: getTaskStatus(task) === 'past' ? '0.6' : '1'
+    }}>
+        <td className="table-cell theme-text-secondary" style={{ textAlign: 'center', fontWeight: '600' }}>
+            {isToday && <span style={{ marginRight: '4px' }}>📍</span>}
+            {getTaskStatus(task) === 'past' && <span style={{ marginRight: '4px' }}>✓</span>}
+            {getTaskStatus(task) === 'future' && <span style={{ marginRight: '4px' }}>📅</span>}
+            {taskIdx + 1}
+        </td>
                                 <td
                                     className="table-cell theme-text-primary"
                                     onClick={() => startEdit(`date-${taskIdx}`, task.date)}
@@ -1502,17 +1541,35 @@
                                         />
                                     ) : (
                                         <span>
-                                            {task.date || 'Click to edit'}
-                                            {isToday && <span style={{ 
-                                                marginLeft: '8px', 
-                                                fontSize: '11px', 
-                                                fontWeight: '700',
-                                                padding: '2px 6px',
-                                                background: 'var(--accent-primary)',
-                                                color: 'white',
-                                                borderRadius: '4px'
-                                            }}>TODAY</span>}
-                                        </span>
+    {task.date || 'Click to edit'}
+    {isToday && <span style={{ 
+        marginLeft: '8px', 
+        fontSize: '11px', 
+        fontWeight: '700',
+        padding: '2px 6px',
+        background: 'var(--accent-primary)',
+        color: 'white',
+        borderRadius: '4px'
+    }}>TODAY</span>}
+    {getTaskStatus(task) === 'past' && <span style={{ 
+        marginLeft: '8px', 
+        fontSize: '11px', 
+        fontWeight: '700',
+        padding: '2px 6px',
+        background: 'var(--text-muted)',
+        color: 'white',
+        borderRadius: '4px'
+    }}>PAST</span>}
+    {getTaskStatus(task) === 'future' && <span style={{ 
+        marginLeft: '8px', 
+        fontSize: '11px', 
+        fontWeight: '700',
+        padding: '2px 6px',
+        background: 'var(--info)',
+        color: 'white',
+        borderRadius: '4px'
+    }}>UPCOMING</span>}
+</span>
                                     )}
                                 </td>
                                 <td
