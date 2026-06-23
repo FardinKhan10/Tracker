@@ -572,12 +572,12 @@
 <body class="light-theme">
     <div id="root"></div>
 
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
-    <script type="text/babel">
+    <script type="text/babel" data-presets="react">
         const { useState, useEffect, useRef } = React;
 
         // Icons
@@ -631,31 +631,39 @@
             const completionChartInstance = useRef(null);
             const timeChartInstance = useRef(null);
 
-            const [tasks, setTasks] = useState(() => getSavedState('daily-tracker-tasks', [
-                { 
-                    date: '18 January', 
-                    day: 'Sunday', 
-                    subtasks: [
-                        { time: '9am-1pm', name: 'Class', done: false },
-                        { time: '2pm-4pm', name: 'Revision', done: false }
-                    ]
-                },
-                { 
-                    date: '19 January', 
-                    day: 'Monday', 
-                    subtasks: [
-                        { time: '10am-12pm', name: 'S & ML', done: false }
-                    ]
-                },
-                { 
-                    date: '20 January', 
-                    day: 'Tuesday', 
-                    subtasks: [
-                        { time: '9am-1pm', name: 'Class', done: false },
-                        { time: '8pm-10:30pm', name: 'Different Class', done: false }
-                    ]
-                }
-            ]));
+            const getDefaultTasks = () => {
+                const today = new Date();
+                const fmt = (d) => d.toLocaleString('en-US', { day: 'numeric', month: 'long' });
+                const dayName = (d) => d.toLocaleString('en-US', { weekday: 'long' });
+                const d = (offset) => { const x = new Date(today); x.setDate(today.getDate() + offset); return x; };
+                return [
+                    {
+                        date: fmt(d(-2)),
+                        day: dayName(d(-2)),
+                        subtasks: [
+                            { time: '9am-1pm', name: 'Class', done: false },
+                            { time: '2pm-4pm', name: 'Revision', done: false }
+                        ]
+                    },
+                    {
+                        date: fmt(d(-1)),
+                        day: dayName(d(-1)),
+                        subtasks: [
+                            { time: '10am-12pm', name: 'S & ML', done: false }
+                        ]
+                    },
+                    {
+                        date: fmt(d(0)),
+                        day: dayName(d(0)),
+                        subtasks: [
+                            { time: '9am-1pm', name: 'Class', done: false },
+                            { time: '8pm-10:30pm', name: 'Different Class', done: false }
+                        ]
+                    }
+                ];
+            };
+
+            const [tasks, setTasks] = useState(() => getSavedState('daily-tracker-tasks', getDefaultTasks()));
 
             const [timetable, setTimetable] = useState(() => getSavedState('daily-tracker-timetable', {
                 weekday: [
@@ -943,8 +951,25 @@ useEffect(() => {
             };
 
             const parseTaskDate = (dateStr) => {
-    const date = new Date(dateStr);
-    return isNaN(date) ? null : date;
+    // Parse "23 June" format — picks the year that makes the date closest to today
+    const parts = dateStr.trim().split(' ');
+    if (parts.length === 2) {
+        const day = parseInt(parts[0]);
+        const month = parts[1];
+        const today = new Date();
+        const currentYear = today.getFullYear();
+        const monthIndex = new Date(`${month} 1, ${currentYear}`).getMonth();
+        if (isNaN(monthIndex) || isNaN(day)) return null;
+        const thisYear = new Date(currentYear, monthIndex, day);
+        const lastYear = new Date(currentYear - 1, monthIndex, day);
+        const nextYear = new Date(currentYear + 1, monthIndex, day);
+        // Pick whichever year makes the date closest to today
+        const candidates = [lastYear, thisYear, nextYear];
+        return candidates.reduce((best, d) =>
+            Math.abs(d - today) < Math.abs(best - today) ? d : best
+        );
+    }
+    return null;
 };
 
             const getTaskStatus = (task) => {
@@ -1932,7 +1957,8 @@ const getTodayTask = () => {
             );
         };
 
-        ReactDOM.render(<ActivityTracker />, document.getElementById('root'));
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<ActivityTracker />);
     </script>
 </body>
 </html>
