@@ -943,16 +943,8 @@ useEffect(() => {
             };
 
             const parseTaskDate = (dateStr) => {
-    // Parse "18 January" format and assume current year
-    const currentYear = new Date().getFullYear();
-    const parts = dateStr.trim().split(' ');
-    if (parts.length === 2) {
-        const day = parseInt(parts[0]);
-        const month = parts[1];
-        const monthIndex = new Date(`${month} 1, ${currentYear}`).getMonth();
-        return new Date(currentYear, monthIndex, day);
-    }
-    return null;
+    const date = new Date(dateStr);
+    return isNaN(date) ? null : date;
 };
 
             const getTaskStatus = (task) => {
